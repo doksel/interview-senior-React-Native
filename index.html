@@ -1,0 +1,1476 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Senior React Native: 50 вопросов</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+:root{
+  --bg:#f6f3f5; --surface:#ffffff; --ink:#2a1a26; --muted:#6f5d69; --line:#e6dde3;
+  --accent:#b0235f; --accent-soft:#f7e3ec; --code-bg:#f1ecef; --ok:#2f7d5b; --ok-soft:#e2f2ea;
+  --info:#2d5f9a; --info-soft:#e4edf8; --warn:#8a5a12; --warn-soft:#f8eedc;
+  --display:"Unbounded", "Manrope", system-ui, sans-serif;
+  --body:"Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#171116; --surface:#211a20; --ink:#f1e8ee; --muted:#b4a3ae; --line:#3a2e37;
+  --accent:#f0679f; --accent-soft:#3d1f2d; --code-bg:#2a2128; --ok:#6fcf9f; --ok-soft:#1d3329;
+  --info:#8bb8ef; --info-soft:#1c2a3d; --warn:#e9b765; --warn-soft:#352a17; color-scheme:dark}}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:880px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.hero{padding-block:36px 18px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(26px,5vw,38px);line-height:1.15;margin:.3em 0 .35em;text-wrap:balance}
+.lead{color:var(--muted);max-width:66ch;margin:0}
+.stack{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.stack span{font-family:var(--mono);font-size:12.5px;padding:3px 9px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+details.top{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+details.top summary{font-weight:700;padding:12px 14px}
+details.top ol{margin:0;padding:0 16px 14px 36px;columns:2 300px;column-gap:28px}
+details.top li{margin:.25em 0;break-inside:avoid;font-size:14px}
+details.top a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--muted)}
+details.top a:hover{color:var(--accent)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding-block:10px}
+.bar .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+#q{flex:1 1 220px;min-width:0;font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}
+#q:focus-visible,button:focus-visible,summary:focus-visible,input[type=checkbox]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn{font:inherit;font-size:13.5px;font-weight:600;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.chips{display:flex;gap:6px;overflow-x:auto;margin-top:10px;padding-bottom:2px;scrollbar-width:thin}
+.chip{flex:0 0 auto;font:inherit;font-size:13.5px;font-weight:600;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;white-space:nowrap}
+.chip small{font-weight:500;color:var(--muted);margin-left:4px;font-variant-numeric:tabular-nums}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip[aria-pressed="true"] small{color:var(--bg);opacity:.75}
+.lv{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--muted)}
+.lv .chip{padding:4px 10px;font-size:12.5px}
+main{padding-block:18px 60px}
+section.sec{margin-bottom:34px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:8px 0 12px}
+.sec-head h2{font-family:var(--display);font-weight:500;font-size:21px;margin:0}
+.sec-head p{margin:2px 0 0;color:var(--muted);font-size:14px;flex-basis:100%}
+.prog{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.list{display:flex;flex-direction:column;gap:8px}
+details.qa{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+details.qa[open]{border-color:color-mix(in srgb,var(--accent) 35%,var(--line))}
+details.qa.done summary .qt{color:var(--muted)}
+details.qa>summary{list-style:none;cursor:pointer;display:flex;gap:10px;align-items:flex-start;padding:12px 14px}
+summary::-webkit-details-marker{display:none}
+.num{font-family:var(--mono);font-size:12px;color:var(--muted);padding-top:3px;min-width:2.4em;font-variant-numeric:tabular-nums}
+.qwrap{flex:1;min-width:0}
+.qt{font-weight:600;display:block}
+.qru{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
+.badges{display:flex;flex-direction:column;gap:4px;align-items:flex-end;flex:0 0 auto}
+.must,.lvl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:6px;white-space:nowrap}
+.must{color:var(--accent);background:var(--accent-soft)}
+.lvl{color:var(--muted);border:1px solid var(--line)}
+.lvl.Expert{color:var(--warn);background:var(--warn-soft);border-color:transparent}
+.lvl.Senior{color:var(--info);background:var(--info-soft);border-color:transparent}
+.cat{font-size:11.5px;color:var(--muted);display:block;margin-top:3px}
+.ans{padding:0 16px 14px 16px;border-top:1px solid var(--line);min-width:0}
+.ans p{margin:.7em 0}
+.ans ul,.ans ol{margin:.6em 0;padding-left:1.3em}
+.ans li{margin:.2em 0}
+.ans code{font-family:var(--mono);font-size:.88em;background:var(--code-bg);padding:1px 5px;border-radius:5px}
+.ans pre{background:var(--code-bg);border-radius:10px;padding:12px 14px;overflow-x:auto;margin:.8em 0}
+.ans pre code{background:none;padding:0;font-size:13px;line-height:1.55}
+.blk{border-radius:10px;padding:10px 12px;margin:.9em 0}
+.blk::before{display:block;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;font-style:normal}
+.short{background:var(--ok-soft);font-weight:500}
+.short::before{content:"Коротко";color:var(--ok)}
+.say{border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+.say::before{content:"Strong answer · на интервью";color:var(--accent)}
+.prod{background:var(--info-soft)}
+.prod::before{content:"Из production";color:var(--info)}
+.fup{background:var(--warn-soft)}
+.fup::before{content:"Уточняющий вопрос интервьюера";color:var(--warn)}
+.fup span{font-weight:600}
+.learn{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:13.5px;color:var(--muted);cursor:pointer;width:fit-content}
+.learn input{accent-color:var(--ok);width:16px;height:16px}
+details.qa.done .learn{color:var(--ok)}
+.empty{color:var(--muted);padding:20px 0}
+@media (prefers-reduced-motion:no-preference){details.qa{transition:border-color .15s}}
+</style>
+</head>
+<body>
+<header class="hero wrap">
+  <div class="eyebrow">Интервью · Senior React Native Engineer</div>
+  <h1>50 самых вероятных вопросов на Senior React Native</h1>
+  <p class="lead">Подобрано под вакансию: архитектура React Native, offline storage, потоки, performance tuning, REST/GraphQL, нативные модули на Swift/Kotlin, Jest и CI/CD. У каждого вопроса есть перевод, короткий ответ, подробное объяснение, готовый ответ на английском (B1–B2), пример из production и уточняющий вопрос интервьюера. Номер вопроса показывает, насколько вероятно его зададут: #1 спросят почти точно. Отметка «топ-15» стоит на вопросах, которые нужно знать безупречно.</p>
+  <div class="stack"><span>New Architecture</span><span>JSI · Fabric · TurboModules</span><span>Hermes</span><span>Reanimated</span><span>FlashList</span><span>React Query · Zustand · RTK</span><span>Offline-first</span><span>GraphQL</span><span>Swift / Kotlin</span><span>Jest · Detox · Maestro</span><span>CI/CD</span></div>
+  <details class="top"><summary>Топ-15 критичных вопросов</summary><ol id="toplist"></ol></details>
+</header>
+
+<div class="bar"><div class="wrap">
+  <div class="row">
+    <input id="q" type="search" placeholder="Поиск по вопросам и ответам…" aria-label="Поиск">
+    <button class="btn" id="mustBtn" aria-pressed="false">Топ-15</button>
+    <button class="btn" id="sortBtn" aria-pressed="false">По вероятности</button>
+    <button class="btn" id="hideDone" aria-pressed="false">Скрыть выученные</button>
+    <button class="btn" id="toggleAll">Раскрыть все</button>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="lv" id="lv"><span>Сложность:</span></div>
+</div></div>
+
+<main class="wrap" id="main"></main>
+
+<script type="text/plain" id="data">
+# newarch | New Architecture (JSI, Fabric, TurboModules) | Самая вероятная тема на Senior RN интервью в 2026. Знать безупречно.
+
+## [!] {Senior} 1 | What is the difference between the old Bridge and JSI? Why is the New Architecture faster?
+~ В чём разница между старым Bridge и JSI? Почему New Architecture быстрее?
+= Bridge пересылал асинхронные JSON-сообщения между JS и Native через очередь. JSI даёт JS прямые ссылки на C++ объекты: вызов без сериализации, можно синхронно.
+**Legacy Architecture (Bridge):**
+- JS и Native жили в разных мирах и общались только сообщениями. Каждый вызов нативного модуля и каждое обновление UI сериализовались в JSON, складывались в batch и асинхронно передавались через `MessageQueue`.
+- Минусы: стоимость сериализации и десериализации, всё асинхронно (нельзя синхронно измерить layout или прочитать значение), очередь могла забиваться (например, при частых событиях скролла), все нативные модули инициализировались на старте.
+**JSI (JavaScript Interface):**
+- C++ API, через который JS-движок (Hermes) может хранить ссылки на C++ объекты (`HostObject`) и вызывать их методы напрямую. Нет JSON, нет очереди.
+- Вызовы могут быть синхронными или асинхронными: решает разработчик модуля.
+- JSI не привязан к движку: тот же код работает с Hermes и JSC.
+- На JSI построены TurboModules, Fabric, Reanimated (worklets), MMKV, VisionCamera frame processors.
+**Почему быстрее «в определённых сценариях»:**
+- Много мелких вызовов в Native (частые события, сенсоры, storage) — нет накладных расходов на сериализацию.
+- Синхронный layout (`useLayoutEffect` + `measure`) без мигания.
+- Ленивая загрузка модулей ускоряет старт.
+- Важно сказать честно: если узкое место — тяжёлый JS или лишние ререндеры, New Architecture сама по себе не спасёт.
+**Текущее состояние:** New Architecture включена по умолчанию с RN 0.76, режим Bridgeless — с 0.74 при включённой новой архитектуре. С RN 0.82 legacy-архитектуру отключить больше нельзя; старые модули работают через Interop Layer.
+> In the old architecture JavaScript and native code talked through an asynchronous bridge. Every call was serialized to JSON, batched and sent through a queue, so it was slow for frequent calls and nothing could be synchronous. JSI is a C++ interface that lets the JS engine hold direct references to native objects and call them without serialization, synchronously if needed. TurboModules, Fabric and libraries like Reanimated and MMKV are built on top of it. It's faster for many small native calls and synchronous layout, but it won't fix heavy JS work or unnecessary re-renders.
+! В приложении с картой и трекингом геопозиции события локации и обновления маркеров шли через Bridge, и при частых апдейтах очередь забивалась — UI отставал на секунды. После перехода на JSI-библиотеки (Reanimated для маркеров, MMKV вместо AsyncStorage) лаги ушли, а старт стал быстрее за счёт ленивых TurboModules.
+? If JSI allows synchronous calls, why shouldn't we make every native method synchronous?
+
+## [!] {Senior} 6 | How do TurboModules work and how are they different from legacy Native Modules?
+~ Как работают TurboModules и чем они отличаются от старых Native Modules?
+= TurboModule — нативный модуль, который загружается лениво при первом обращении, вызывается через JSI и имеет типизированный контракт, сгенерированный Codegen из TS-спеки.
+**Legacy Native Modules:**
+- Все модули регистрировались и инициализировались при старте приложения (даже неиспользуемые) — медленный старт.
+- Вызовы через Bridge, только асинхронно (кроме редких blocking-методов), аргументы через JSON.
+- Типы на JS-стороне никак не проверялись: опечатка в имени метода — `undefined is not a function` в рантайме.
+**TurboModules:**
+- Ленивая загрузка: модуль создаётся при первом `TurboModuleRegistry.get`.
+- Вызов через JSI: JS получает `HostObject`, методы вызываются напрямую.
+- Типобезопасность: пишешь спецификацию на TypeScript, Codegen генерирует C++/ObjC++/Java интерфейсы, которые нативная реализация обязана реализовать. Несоответствие ловится на этапе сборки.
+- Поддерживаются синхронные методы (возвращают значение) и асинхронные (Promise).
+```ts
+// specs/NativeSecureStorage.ts
+import type { TurboModule } from 'react-native'
+import { TurboModuleRegistry } from 'react-native'
+
+export interface Spec extends TurboModule {
+  getItem(key: string): Promise<string | null>
+  setItem(key: string, value: string): Promise<void>
+  getDeviceIdSync(): string           // синхронный метод
+}
+
+export default TurboModuleRegistry.getEnforcing<Spec>('SecureStorage')
+```
+- В `package.json` указывается `codegenConfig` (name, type: `modules`, jsSrcsDir).
+- Альтернативы: Expo Modules API (Swift/Kotlin DSL, тоже на JSI), Nitro Modules (ещё быстрее, генерация через Nitrogen).
+> TurboModules are the new native modules. They are loaded lazily when JavaScript first uses them, so startup is faster, and they are called through JSI instead of the bridge. I write a TypeScript spec, Codegen generates the native interfaces, and the native code must implement them, so a mismatch fails at build time, not in production. Methods can be synchronous or return a promise.
+! Нужно было интегрировать нативный SDK банковской верификации. Раньше модуль грузился на старте и добавлял ~150 мс к TTI. Переписали его на TurboModule: модуль инициализируется только при открытии экрана верификации, а типизированная спека сразу поймала расхождение типов на Android.
+? What happens to a legacy native module from a third-party library when you enable the New Architecture?
+
+## [!] {Expert} 7 | What is Fabric? Explain the render, commit and mount phases.
+~ Что такое Fabric? Объясни фазы render, commit и mount.
+= Fabric — новый рендерер RN на C++. React строит Shadow Tree, Yoga считает layout, а затем изменения применяются к нативным вью на UI-потоке. Поддерживает concurrent React и синхронный layout.
+**Три фазы рендеринга в Fabric:**
+1. **Render** (JS thread): React выполняет компоненты и через JSI создаёт C++ Shadow Nodes — так появляется React Shadow Tree. Shadow Tree иммутабельное: каждое обновление создаёт новую версию (с переиспользованием неизменённых узлов).
+2. **Commit** (может быть на любом потоке, обычно background): Yoga вычисляет layout (размеры и позиции), новое дерево «продвигается» (tree promotion) как следующее для монтирования.
+3. **Mount** (UI thread): diff между старым и новым деревом превращается в список мутаций (create, update, delete, insert), которые применяются к реальным `UIView` / `android.view.View`.
+**Что даёт Fabric:**
+- Единое C++ ядро для iOS и Android, меньше различий поведения.
+- Иммутабельное дерево безопасно читать с разных потоков.
+- Синхронный рендеринг для высокоприоритетных событий и синхронный `measure` в `useLayoutEffect` — без мигания тултипов и попапов.
+- Поддержка concurrent features React 18 (`useTransition`, Suspense, автоматический batching).
+- View Flattening: узлы, которые влияют только на layout (`View` без фона и событий), не создают нативных вью — дерево легче.
+> Fabric is the new rendering system, written in C++ and shared by iOS and Android. In the render phase React runs on the JS thread and creates an immutable shadow tree through JSI. In the commit phase Yoga calculates layout and the new tree is promoted. In the mount phase the diff becomes a list of mutations applied to real native views on the UI thread. Because the tree is immutable and in C++, Fabric supports concurrent React, synchronous layout reads and view flattening.
+! Тултип над кнопкой «Добавить в корзину» на старой архитектуре мигал: `onLayout` приходил асинхронно, и первый кадр рисовался в неправильной позиции. На Fabric мы измерили кнопку в `useLayoutEffect` синхронно, и тултип стал появляться сразу в нужном месте.
+? What is view flattening and when can it break your code, for example with refs or native measurements?
+
+## {Senior} 18 | How would you migrate a large production app to the New Architecture?
+~ Как бы ты мигрировал большое production-приложение на New Architecture?
+= Обновить RN поэтапно, проверить совместимость всех библиотек, заменить несовместимые, переписать свои нативные модули на TurboModules/Fabric, тестировать на реальных устройствах и раскатывать постепенно.
+**План миграции:**
+- Аудит зависимостей: `reactnative.directory` (флаг New Architecture), `npx expo-doctor` для Expo, issues библиотек. Составить таблицу: поддерживает / работает через interop / нужно заменить.
+- Обновить RN до свежей версии поэтапно (по 1–2 минорным версиям), используя React Native Upgrade Helper.
+- Свои нативные модули переписать на TurboModules с Codegen, свои нативные UI-компоненты — на Fabric Native Components (или Expo Modules).
+- Interop Layer позволяет временно запускать legacy-модули, но не стоит на нём останавливаться: не всё работает (например, прямой доступ к `bridge`, `UIManager` API).
+**Типичные проблемы:**
+- Библиотеки, использующие `NativeModules` и `bridge` напрямую.
+- Изменение порядка и тайминга `onLayout`, эффектов, batching — могут всплыть баги, которые раньше «маскировались» асинхронностью.
+- `setNativeProps` в Fabric не работает как раньше — переход на state или Reanimated.
+- Reanimated 4 и FlashList v2 работают только на New Architecture.
+**Как снижать риск:** отдельная ветка, e2e-регрессия (Detox/Maestro), сравнение метрик (TTI, FPS, crash-free) до и после, phased release в сторах, feature freeze на время миграции.
+> First I audit all dependencies and mark which ones support the New Architecture, which work through the interop layer and which need replacing. Then I upgrade React Native step by step with the Upgrade Helper and rewrite our own native modules as TurboModules with Codegen specs. I run the full e2e suite, compare startup time, FPS and crash-free rate with the old build, and release with a phased rollout so we can stop if crash rates go up.
+! При миграции приложения доставки с RN 0.71 на 0.76 два платёжных SDK использовали `bridge` напрямую. Один обновили, второй обернули в свой TurboModule. После релиза сломалась анимация bottom sheet из-за `setNativeProps` — перевели на Reanimated. Phased rollout на 10% позволил поймать краш до раскатки на всех.
+? What exactly does the interop layer do, and what kind of legacy code does it not support?
+
+## {Expert} 21 | What is Codegen and what problems does it solve?
+~ Что такое Codegen и какие проблемы он решает?
+= Codegen читает TypeScript/Flow-спецификации модулей и компонентов и генерирует нативный «клей» на C++/ObjC++/Java, обеспечивая типобезопасный контракт между JS и Native.
+- Вход: файлы спецификаций `Native*.ts` (модули) и `*NativeComponent.ts` (компоненты, через `codegenNativeComponent`).
+- Выход: C++ интерфейсы, JSI-биндинги, Props/EventEmitter классы для Fabric-компонентов, ObjC++ протоколы и Java/Kotlin абстрактные классы.
+- Запускается при сборке: на iOS во время `pod install`, на Android как Gradle-задача. Библиотека может поставлять сгенерированный код заранее.
+**Какие проблемы решает:**
+- Типобезопасность: несовпадение типов между JS и Native ловится на этапе компиляции.
+- Убирает рукописный boilerplate и ошибки маршалинга.
+- Позволяет вызывать методы напрямую через JSI без рантайм-рефлексии.
+- Ограничения: поддерживает только подмножество типов TS (примитивы, объекты, массивы, Promise, колбэки, enum-подобные union), без сложных generics.
+```ts
+// specs/RatingViewNativeComponent.ts
+import type { ViewProps } from 'react-native'
+import type { Int32, DirectEventHandler } from 'react-native/Libraries/Types/CodegenTypes'
+import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent'
+
+type ChangeEvent = Readonly<{ value: Int32 }>
+
+interface NativeProps extends ViewProps {
+  value: Int32
+  onChange?: DirectEventHandler<ChangeEvent>
+}
+
+export default codegenNativeComponent<NativeProps>('RatingView')
+```
+> Codegen reads TypeScript specs for native modules and components and generates the native glue code in C++, Objective-C++ and Java. This gives us a typed contract between JavaScript and native code, so a type mismatch fails during the build instead of crashing at runtime. It runs during pod install on iOS and as a Gradle task on Android.
+! В команде Android-разработчик поменял тип аргумента нативного метода с `double` на `int`. С legacy-модулем это дало бы краш только в рантайме у части пользователей, а с Codegen сборка упала на CI, и ошибку исправили до мержа.
+? Which TypeScript types are not supported by Codegen, and how do you work around it?
+
+# arch | React Native Architecture | Как RN устроен внутри: потоки, рендеринг, Hermes, сборка.
+
+## [!] {Senior} 2 | Explain the React Native threading model. What runs on the JS thread and what runs on the UI thread?
+~ Объясни модель потоков React Native. Что выполняется на JS thread, а что на UI thread?
+= JS thread — React, бизнес-логика, обработчики событий. UI (main) thread — нативные вью, касания, анимации native driver. Background — layout (Yoga) и commit в Fabric. Native modules — свои потоки или очереди.
+**Потоки:**
+- **UI / Main thread:** рисует нативные вью, обрабатывает касания и жесты, выполняет mount-фазу Fabric, нативные анимации (Reanimated worklets, `useNativeDriver`), скролл.
+- **JS thread:** Hermes выполняет бандл: рендер React-компонентов, хуки, бизнес-логику, state management, обработчики `onPress`, таймеры, сетевые колбэки.
+- **Background thread(s):** в Fabric — вычисление layout через Yoga и commit Shadow Tree (раньше в legacy был отдельный shadow thread).
+- **Native modules:** на iOS у каждого модуля своя `methodQueue` (или main queue, если `requiresMainQueueSetup`), на Android — свой пул потоков. TurboModule может работать синхронно на JS thread.
+**Что важно для производительности:**
+- Каждый поток должен уложиться в бюджет кадра: 16.6 мс при 60 Гц, 8.3 мс при 120 Гц.
+- Если JS thread занят — UI не зависает полностью (скролл работает), но не реагируют кнопки, не приходят обновления, JS-анимации дёргаются.
+- Если UI thread занят (тяжёлые нативные вью, огромные картинки, много теней) — тормозит всё, включая скролл.
+- Perf Monitor показывает FPS двух потоков отдельно — первое, на что смотреть.
+> React Native mainly uses two threads. The JS thread runs our bundle in Hermes: React rendering, hooks, business logic and event handlers. The UI thread draws native views, handles touches and scrolling and runs native animations. In Fabric, layout with Yoga and the commit step can run on a background thread, and native modules have their own queues. If the JS thread is blocked, buttons stop responding and JS animations drop frames, but native scrolling still works, so I always check the JS and UI FPS separately in the Perf Monitor.
+! На экране чата при получении большой пачки сообщений парсинг и сортировка 2000 элементов занимали ~300 мс на JS thread — кнопка «отправить» не реагировала. Вынесли сортировку на бэкенд и обработку в батчи через `InteractionManager`/`requestIdleCallback`, JS FPS перестал проседать.
+? How does Reanimated run code on the UI thread if JavaScript is single-threaded?
+
+## [!] {Senior} 4 | How does React Native show a <View> on the screen? Walk me through the whole pipeline.
+~ Как React Native отображает <View> на экране? Опиши весь путь.
+= JSX → React element → reconciliation → C++ Shadow Node через JSI → Yoga layout → diff → мутации → настоящий UIView/ViewGroup на UI thread.
+**Путь от кода до пикселей (New Architecture):**
+1. Metro собрал бандл, Hermes выполняет его (байткод).
+2. JSX `<View style={...}>` превращается в `React.createElement` → React element (обычный JS-объект).
+3. React reconciler (Fiber) сравнивает новое дерево элементов с предыдущим и определяет, что изменилось.
+4. Fabric renderer через JSI создаёт или клонирует C++ `ShadowNode` для host-компонентов (`View`, `Text`, `Image`). Пропсы конвертируются в C++ структуры (`ViewProps`).
+5. Commit: Yoga считает Flexbox-layout для Shadow Tree (ширина, высота, x, y). View Flattening убирает «чисто layout» вью.
+6. Diff старого и нового Shadow Tree → список мутаций.
+7. Mount на UI thread: `RCTViewComponentView` (iOS) / `ReactViewGroup` (Android) создаются или обновляются, им ставятся frame и свойства.
+8. Нативная система (UIKit / Android View system) рисует кадр.
+**Legacy-отличие:** шаги 4–7 шли через `UIManager` по Bridge асинхронно, с JSON-сериализацией, layout на отдельном shadow thread.
+> When I write a View in JSX, it becomes a React element. React's reconciler compares it with the previous tree, and the Fabric renderer creates or clones a C++ shadow node through JSI. Then Yoga calculates the flexbox layout, Fabric diffs the old and new shadow trees and produces a list of mutations. Finally, on the UI thread these mutations create or update real native views, like UIView on iOS or ViewGroup on Android, and the platform draws the frame.
+! При отладке «пустого» экрана на Android выяснилось, что `View` с `collapsable` по умолчанию был сплющен (view flattening), и нативный SDK рекламы не находил контейнер по ref. Решение — `collapsable={false}` для вью, к которой обращается нативный код.
+? Why can't you use a regular web DOM element in React Native, and what does the "host component" mean here?
+
+## {Senior} 15 | What is Hermes and why is it the default engine?
+~ Что такое Hermes и почему он движок по умолчанию?
+= JS-движок от Meta, оптимизированный под мобильные: компилирует JS в байткод на этапе сборки, поэтому быстрее старт, меньше память и размер.
+- **AOT-компиляция в байткод:** при сборке релиза JS превращается в `.hbc`. Телефону не нужно парсить и компилировать JS на старте — главный выигрыш для TTI.
+- **Без JIT (по умолчанию):** меньше памяти и предсказуемая производительность, но долгие вычислительные задачи могут быть медленнее, чем в V8/JSC с JIT.
+- **GC Hades:** concurrent garbage collector, короткие паузы, меньше фризов.
+- Bytecode через mmap: читается с диска по мере надобности, меньше RAM.
+- Отладка: Chrome DevTools Protocol, используется React Native DevTools; профилирование — sampling profiler (`.cpuprofile`).
+- Поддержка современных фич: `Proxy`, `Intl` (на Android с некоторыми ограничениями исторически), `async/await` нативно. Некоторые вещи (например, `with`, часть `eval`) не поддерживаются.
+- Развитие: Hermes V1 / Static Hermes — следующая версия движка с более быстрым исполнением; в RN 0.82 появилась как экспериментальная опция.
+> Hermes is a JavaScript engine built by Meta for React Native. Its main idea is ahead-of-time compilation: the JS bundle is compiled to bytecode during the build, so the phone doesn't need to parse and compile JavaScript at startup. This gives faster startup, lower memory use and a smaller app. It also has a concurrent garbage collector with short pauses. The trade-off is no JIT by default, so very CPU-heavy code can be slower than in V8.
+! После перехода с JSC на Hermes в приложении маркетплейса cold start на бюджетных Android (Redmi с 3 ГБ RAM) упал примерно с 4.1 до 2.6 секунды, а пиковая память — на ~30%. Пришлось только поменять полифилл `Intl` для форматирования дат.
+? How would you profile a slow JavaScript function in a Hermes release build?
+
+## {Middle} 32 | What does Metro do, and what happens when you build a release app?
+~ Что делает Metro и что происходит при сборке релиза?
+= Metro — бандлер RN: резолвит модули, трансформирует код Babel'ем и собирает один бандл. При релизе бандл компилируется в Hermes-байткод и вшивается в нативную сборку Xcode/Gradle.
+**Metro:**
+- Resolution: находит модули с учётом платформенных расширений (`.ios.tsx`, `.android.tsx`, `.native.tsx`).
+- Transformation: Babel (`@react-native/babel-preset`) транспилирует TS/JSX, каждый файл отдельно, с кэшем.
+- Serialization: собирает модули в один бандл с runtime для `require`.
+- Dev: Fast Refresh, сервер на 8081. Нет классического tree shaking (экспериментально в Expo), поэтому важны точечные импорты.
+**Release build:**
+- iOS: build phase в Xcode запускает `react-native-xcode.sh` → Metro bundle → `hermesc` → `.hbc` в `.app`. Потом сборка нативного кода (CocoaPods-зависимости), подпись, архив.
+- Android: Gradle-задача `createBundleReleaseJsAndAssets` → Hermes → в `assets`, затем R8/ProGuard, сборка AAB, подпись.
+- Autolinking: `@react-native-community/cli` или Expo сканирует `node_modules` и подключает нативные части библиотек (Pods на iOS, Gradle-модули на Android) без ручного редактирования.
+- Source maps генерируются отдельно и загружаются в Sentry для читаемых стектрейсов.
+> Metro is the JavaScript bundler for React Native. It resolves modules, including platform-specific files, transforms each file with Babel and serializes everything into one bundle. In a release build, Xcode or Gradle runs Metro, compiles the bundle to Hermes bytecode and puts it inside the app, and autolinking adds the native parts of our libraries. We also upload source maps to Sentry so production stack traces are readable.
+! После добавления библиотеки иконок бандл вырос на 1.8 МБ, потому что импорт шёл через barrel-файл (`import { X } from 'icons'`). Перешли на точечные импорты и `babel-plugin-transform-imports` — бандл вернулся к прежнему размеру.
+? Why do production crashes show minified stack traces, and how do you fix that in your CI?
+
+# perf | Performance Optimization | Находить реальную причину, а не перечислять инструменты.
+
+## [!] {Senior} 3 | A screen is janky and users complain. How do you find and fix the problem?
+~ Экран тормозит, пользователи жалуются. Как найдёшь и исправишь проблему?
+= Воспроизвести на слабом Android в release, понять какой поток проседает (JS или UI), профилировать нужным инструментом, исправить главную причину и измерить снова.
+**Процесс (это главное, что хотят услышать):**
+1. **Воспроизвести правильно:** release-сборка (dev-режим в разы медленнее), слабое Android-устройство, реальные данные.
+2. **Какой поток:** Perf Monitor — JS FPS vs UI FPS.
+3. **Если JS thread:**
+- React DevTools Profiler: какие компоненты ререндерятся и почему («Why did this render?»).
+- Hermes sampling profiler в React Native DevTools: какие функции занимают время.
+- Типичные причины: каскадные ререндеры от контекста или стора, тяжёлые вычисления в рендере, JS-анимации, `console.log` в проде, синхронный JSON.parse больших данных.
+4. **Если UI thread:**
+- Android Studio Profiler / Systrace (Perfetto), Xcode Instruments (Time Profiler, Core Animation).
+- Причины: огромные картинки без ресайза, много теней и прозрачности (overdraw), глубокое дерево вью, тяжёлые нативные компоненты.
+5. **Исправить главную причину**, а не «всё подряд»: state colocation, селекторы, memo, FlashList, Reanimated, ресайз картинок.
+6. **Измерить снова** и добавить мониторинг (Sentry performance, slow/frozen frames), чтобы регрессия не вернулась.
+> First I reproduce the problem in a release build on a low-end Android device, because dev mode is much slower. Then I open the Perf Monitor to see if the JS thread or the UI thread drops frames. For JS problems I use the React Profiler to find unnecessary re-renders and the Hermes profiler to find slow functions. For UI problems I use Android Studio or Xcode Instruments and usually find big images, overdraw or deep view trees. I fix the biggest cause first, measure again and add slow-frame monitoring so it doesn't come back.
+! Лента товаров дёргалась при скролле. Profiler показал, что каждая карточка подписана на весь Redux-стор корзины через `useSelector(s => s.cart)` — добавление товара перерисовывало 200 карточек. Заменили на селектор `s => s.cart.ids.includes(id)` и мемоизировали карточку — JS FPS вырос с ~35 до 58.
+? The UI FPS is fine, but the JS FPS drops to 20 only when the user types in search. What would you check?
+
+## [!] {Senior} 8 | How do you optimize a long list? FlatList vs FlashList.
+~ Как оптимизировать длинный список? FlatList vs FlashList.
+= FlatList виртуализирует — создаёт и удаляет элементы окна. FlashList переиспользует (recycling) уже созданные вью, поэтому меньше работы и пустых областей. Плюс мемоизированные элементы, стабильные ключи и лёгкие картинки.
+**FlatList (VirtualizedList):**
+- Рендерит только окно вокруг видимой области, элементы вне окна размонтируются. При быстром скролле — «белые области» (blank areas), т.к. новые элементы монтируются с нуля.
+- Настройки: `keyExtractor`, `getItemLayout` (фиксированная высота — не нужно измерять), `initialNumToRender`, `maxToRenderPerBatch`, `windowSize`, `updateCellsBatchingPeriod`, `removeClippedSubviews` (Android).
+**FlashList (Shopify):**
+- Recycling: компоненты, ушедшие за экран, переиспользуются с новыми данными — нет дорогого mount/unmount.
+- FlashList v2 (2025) написан для New Architecture: синхронно измеряет элементы, не требует `estimatedItemSize`, поддерживает masonry.
+- Важно: элементы переиспользуются, поэтому локальный `useState` внутри элемента «переедет» на другой товар — сбрасывать state по id или держать его снаружи. Для разных типов ячеек — `getItemType`.
+**Общие правила для любого списка:**
+- Элемент — отдельный `memo`-компонент, `renderItem` стабильный (`useCallback`), без inline-объектов в пропсах.
+- Картинки: `expo-image` с кэшем, размер под реальный размер на экране (CDN-ресайз), `recyclingKey`.
+- Не класть тяжёлые вычисления в элемент, не подписывать каждый элемент на большой стор.
+```tsx
+const ProductCell = memo(({ item, onPress }: { item: Product; onPress: (id: string) => void }) => (
+  <Pressable onPress={() => onPress(item.id)}>
+    <Image source={{ uri: item.thumb }} style={styles.img} recyclingKey={item.id} />
+    <Text>{item.name}</Text>
+  </Pressable>
+))
+
+const renderItem = useCallback(
+  ({ item }: { item: Product }) => <ProductCell item={item} onPress={openProduct} />,
+  [openProduct],
+)
+
+<FlashList data={products} renderItem={renderItem} keyExtractor={(p) => p.id} />
+```
+> FlatList virtualizes the list: it mounts items inside a window and unmounts items outside, so fast scrolling can show blank areas. FlashList recycles views instead: it reuses components that left the screen with new data, so there is much less mounting work. In both cases I keep the item as a memoized component, pass stable callbacks, use stable keys and load images at the real display size. With FlashList I'm careful with local state inside items, because recycled cells can keep state from another item.
+! В каталоге на 5000 товаров FlatList давал пустые области и ~40 FPS на Android. Перешли на FlashList, вынесли карточку в `memo`, подключили ресайз картинок через CDN (300px вместо 1200px). Blank area почти исчезла, память упала примерно на 40%. Поймали баг: после recycling на чужой карточке оставалось «сердечко» из локального state — перенесли избранное в стор.
+? With FlashList recycling, a user sees the wrong "favorite" icon on a product after scrolling. Why, and how do you fix it?
+
+## [!] {Senior} 10 | Animated vs Reanimated: why is Reanimated faster and how do worklets work?
+~ Animated vs Reanimated: почему Reanimated быстрее и как работают worklets?
+= Animated с JS-драйвером считает каждый кадр в JS thread. Native driver переносит анимацию на UI, но только для transform/opacity и без логики. Reanimated выполняет worklets на UI thread в отдельном JS-рантайме — любые свойства и логика жестов без JS thread.
+**Animated:**
+- JS-драйвер: каждый кадр JS вычисляет значение и отправляет обновление — при занятом JS анимация дёргается.
+- `useNativeDriver: true`: анимация сериализуется и выполняется нативно, но только для non-layout свойств (`transform`, `opacity`), нельзя анимировать `width`, `height`, и нельзя добавить логику в процессе.
+**Reanimated:**
+- Worklet — функция, помеченная директивой `'worklet'` (Babel-плагин делает это автоматически для `useAnimatedStyle` и колбэков жестов). Она копируется во второй JS-рантайм, который живёт на UI thread.
+- `useSharedValue` — значение, доступное из обоих рантаймов через JSI. Изменение `sv.value` не вызывает ререндер React.
+- `useAnimatedStyle` пересчитывается на UI thread каждый кадр и применяет стили напрямую к нативной вью.
+- Связь между потоками: `runOnJS` / `runOnUI` (в Reanimated 4 и `react-native-worklets` — `scheduleOnRN` / `scheduleOnUI`).
+- Reanimated 4 работает только на New Architecture, добавил CSS-подобные анимации и transitions.
+**Типичные ошибки:** читать `sv.value` в рендере, вызывать JS-функции из worklet без `runOnJS`, захватывать в замыкание worklet большие объекты (они копируются).
+```tsx
+const offset = useSharedValue(0)
+const pan = Gesture.Pan()
+  .onUpdate((e) => { offset.value = e.translationX })          // UI thread
+  .onEnd(() => {
+    if (Math.abs(offset.value) > 120) runOnJS(removeFromCart)(id)
+    offset.value = withSpring(0)
+  })
+const style = useAnimatedStyle(() => ({ transform: [{ translateX: offset.value }] }))
+```
+> With the JS driver, Animated calculates every frame on the JS thread, so animations stutter when JavaScript is busy. The native driver moves the animation to the UI thread, but only for transform and opacity, without logic. Reanimated runs small functions called worklets in a separate JS runtime on the UI thread. Shared values are available in both runtimes through JSI, and animated styles are applied directly to native views without React re-renders. So gestures and animations stay smooth even when the JS thread is busy.
+! Bottom sheet с фильтрами на Animated дёргался, когда параллельно грузились товары и шёл рендер списка. Переписали на Reanimated + Gesture Handler: жест и анимация полностью на UI thread, плавно даже при загрузке. Из worklet вызывали аналитику через `runOnJS` только в `onEnd`, а не каждый кадр.
+? Why is calling runOnJS inside onUpdate of a pan gesture a bad idea?
+
+## [!] {Senior} 16 | How do you improve app startup time (TTI)?
+~ Как улучшить время старта приложения (TTI)?
+= Измерить фазы старта, затем: Hermes, меньше работы до первого экрана, ленивые экраны и SDK, быстрый storage, кэш данных прошлой сессии, меньше нативной инициализации.
+**Фазы cold start:** нативная инициализация (процесс, Application/AppDelegate, SDK) → загрузка JS-бандла → выполнение JS (импорты модулей!) → первый рендер → загрузка данных → контент на экране.
+**Что делать:**
+- Hermes с байткодом (без парсинга JS).
+- Inline requires / lazy imports: модули выполняются при первом использовании, а не все на старте (`inlineRequires` в Metro, `React.lazy` / `getComponent` для экранов в навигации).
+- Отложить инициализацию SDK: аналитика, чат поддержки, A/B, карты — после первого рендера (`InteractionManager.runAfterInteractions` или после `onReady`).
+- Storage: MMKV (синхронный, JSI) вместо нескольких `await AsyncStorage.getItem` перед первым экраном.
+- Persisted cache React Query: показать данные прошлой сессии сразу и обновить в фоне (stale-while-revalidate).
+- Нативная часть: убрать тяжёлые вещи из `Application.onCreate`/`didFinishLaunching`, проверить количество нативных модулей (TurboModules ленивые).
+- Splash screen держать до готовности первого экрана, не дольше; избегать водопада запросов на старте.
+- Размер бандла: убрать тяжёлые зависимости (moment → date-fns/dayjs, lodash целиком).
+**Измерять:** `react-native-performance` (маркеры), Sentry App Start, Android Vitals, Xcode Organizer — на холодном старте и на слабых устройствах.
+> First I measure the startup phases: native initialization, bundle loading, JS execution, first render and data loading. Then I make sure Hermes is on, use inline requires and lazy screens so we don't execute all modules at startup, and move non-critical SDKs like analytics or chat until after the first screen. I read startup data synchronously from MMKV and show cached data from the previous session while fresh data loads. I track cold start in production with Sentry and Android Vitals.
+! В приложении e-commerce cold start на Android был 5.2 с. Профилирование показало: 9 SDK инициализировались синхронно в `onCreate`, а JS импортировал все 60 экранов на старте. Отложили SDK, включили inline requires, перешли на MMKV и persisted cache — TTI стал ~2.4 с, Android Vitals перестал показывать предупреждение.
+? How would you measure startup time in production for real users, not just on your device?
+
+## {Senior} 27 | How do you handle images and memory in a React Native app?
+~ Как работать с изображениями и памятью в React Native приложении?
+= Загружать картинки нужного размера с CDN, кэшировать (expo-image / FastImage), не держать большие bitmap в памяти, следить за утечками в подписках и экранах.
+**Картинки — главная причина OOM на Android:**
+- Bitmap в памяти занимает `ширина × высота × 4` байта: фото 4000×3000 ≈ 48 МБ, даже если показано 100×100.
+- Запрашивать размер под экран с учётом `PixelRatio` через CDN-ресайз (`?w=300&dpr=3`), современные форматы (WebP/AVIF).
+- `expo-image` (SDWebImage / Glide): дисковый и memory кэш, `cachePolicy`, `placeholder` (blurhash), `recyclingKey` для списков, `priority`.
+- Prefetch картинок следующего экрана (`Image.prefetch`).
+**Утечки памяти в RN:**
+- Не снятые подписки (`AppState`, `Keyboard`, `NetInfo`, WebSocket, EventEmitter) в `useEffect` без cleanup.
+- Таймеры и интервалы, глобальные кэши без лимита, большие объекты в замыканиях.
+- Экраны в stack навигации остаются смонтированными — 10 открытых карточек товара с галереями.
+**Как искать:** Android Studio Memory Profiler, Xcode Instruments (Leaks, Allocations), Hermes heap snapshot в React Native DevTools — сравнить снапшоты до и после открытия/закрытия экрана.
+> Images are the most common memory problem, because a bitmap takes width times height times four bytes, no matter how small it is on screen. So I request images at the display size from a CDN, use modern formats and a caching library like expo-image. For memory leaks I check effect cleanups for subscriptions and timers, and I compare Hermes heap snapshots before and after opening and closing a screen.
+! Android-пользователи получали OOM-краши в галерее отзывов. Оказалось, загружались оригиналы фото по 8–12 МП. Добавили ресайз через CDN и `expo-image` с ограничением memory cache — OOM в Crashlytics упали почти до нуля.
+? A user opens and closes the product screen 20 times and the app memory keeps growing. How do you find what is leaking?
+
+## {Middle} 38 | How do you reduce the app size (APK/IPA) and the JS bundle size?
+~ Как уменьшить размер приложения (APK/IPA) и JS-бандла?
+= AAB и разбиение по ABI, R8/ProGuard, Hermes, удаление лишних зависимостей и ассетов, точечные импорты, анализ бандла.
+- **Android:** публиковать AAB (Google Play отдаёт APK под конкретное устройство: ABI, плотность экрана), `minifyEnabled` + `shrinkResources` (R8), убрать лишние ABI из debug.
+- **iOS:** App Thinning делает App Store, проверить размер в App Store Connect, убрать неиспользуемые Pods, Bitcode больше не используется.
+- **JS-бандл:** анализ через `react-native-bundle-visualizer` / source-map-explorer, замена тяжёлых библиотек (moment, lodash целиком), точечные импорты вместо barrel-файлов.
+- **Ассеты:** шрифты только нужных начертаний, картинки в WebP или с CDN, Lottie вместо видео, удаление неиспользуемых ассетов.
+- Нативные SDK часто весят больше всего JS — проверять каждую новую зависимость.
+> On Android I ship an App Bundle so Google Play delivers only the code for the device's architecture and screen density, and I enable R8 with resource shrinking. For JavaScript I analyze the bundle with a visualizer, replace heavy libraries like moment and use direct imports instead of barrel files. I also check assets and native SDKs, because one SDK can add more megabytes than all our JavaScript.
+! Размер APK был 78 МБ, пользователи в регионах с дорогим интернетом не скачивали. Переход на AAB, R8, удаление двух неиспользуемых SDK и конвертация ассетов в WebP дали ~31 МБ на устройство, конверсия установки из стора заметно выросла.
+? What can break after enabling R8 on Android, and how do you fix it?
+
+# react | React Internals | Рендеринг, хуки, жизненный цикл и мемоизация глазами RN-разработчика.
+
+## [!] {Senior} 5 | What causes a component to re-render, and how do you prevent unnecessary re-renders?
+~ Что вызывает ререндер компонента и как избежать лишних ререндеров?
+= Ререндер вызывают: изменение своего state, ререндер родителя, изменение контекста или подписанного стора. Лечится структурой (state colocation, children), селекторами и мемоизацией там, где Profiler показал проблему.
+**Причины ререндера:**
+- `setState` с новым значением (сравнение `Object.is`).
+- Ререндер родителя — все дети перерисовываются, если не обёрнуты в `memo` (пропсы при этом могут быть те же).
+- Изменение `value` контекста — все потребители.
+- Изменение внешнего стора через `useSyncExternalStore` (Zustand, Redux `useSelector`), если результат селектора изменился.
+**Как предотвращать (в порядке приоритета):**
+1. Структура: опустить state ближе к месту использования (state colocation), вынести быстро меняющуюся часть в отдельный компонент, передавать стабильные части через `children`.
+2. Узкие подписки: селекторы в Zustand/Redux, `select` в React Query, разделение контекстов (state и actions отдельно).
+3. Мемоизация: `React.memo` для тяжёлых элементов (особенно элементов списка) + стабильные пропсы через `useCallback`/`useMemo`. Без `memo` у ребёнка `useCallback` бесполезен.
+4. React Compiler (стабилен с октября 2025): автоматическая мемоизация при соблюдении правил React — ручных `useMemo` нужно меньше.
+**В RN это важнее, чем в вебе:** JS thread один, слабые Android-устройства, а ререндер элемента списка может вызвать работу на всех трёх потоках.
+```tsx
+// ❌ новый объект и функция каждый рендер → memo у Row бесполезен
+<Row style={{ padding: 8 }} onPress={() => select(item.id)} item={item} />
+
+// ✅
+const onPress = useCallback((id: string) => select(id), [select])
+<Row style={styles.row} onPress={onPress} item={item} />
+```
+> A component re-renders when its own state changes, when its parent re-renders, or when a context or store value it subscribes to changes. To avoid unnecessary renders I first fix the structure: I keep state close to where it's used and pass stable parts as children. Then I use selectors so components subscribe only to the data they need. I add memo and stable callbacks only where the Profiler shows a problem, and with React Compiler a lot of manual memoization is no longer needed.
+! Экран корзины лагал при изменении количества товара: весь `CartContext` (items, total, promo, actions) лежал в одном value. Каждое нажатие «+» перерисовывало хедер, рекомендации и все строки. Перенесли корзину в Zustand с селекторами, строки — `memo` — количество ререндеров на одно нажатие упало с ~40 до 2.
+? When does wrapping a component in React.memo make performance worse instead of better?
+
+## {Senior} 19 | Explain reconciliation and React Fiber. What is the difference between the render phase and the commit phase?
+~ Объясни reconciliation и React Fiber. Чем фаза render отличается от commit?
+= Reconciliation — сравнение нового дерева элементов со старым. Fiber — внутренняя структура, где работа разбита на единицы, которые можно прерывать и приоритизировать. Render — чистое вычисление (можно прервать), commit — синхронное применение изменений к host (DOM или Fabric).
+**Fiber:**
+- Каждый компонент — fiber-узел: тип, пропсы, state (связный список хуков), ссылки child/sibling/return, флаги эффектов.
+- Две копии дерева: `current` (на экране) и `workInProgress` (строится). После commit они меняются местами (double buffering).
+- Работа разбита на единицы, планировщик может прерваться, чтобы обработать срочное обновление. Приоритеты выражены через Lanes (SyncLane для ввода, TransitionLanes для `startTransition`).
+**Render phase:**
+- Вызов компонентов, сравнение (diffing): разный тип → поддерево пересоздаётся, одинаковый → обновляются пропсы, списки сопоставляются по `key`.
+- Должна быть чистой: может выполниться несколько раз или быть отброшена (поэтому StrictMode вызывает рендер дважды).
+**Commit phase:**
+- Синхронная, не прерывается: применяет мутации к host (в RN — к Fabric Shadow Tree), затем `useLayoutEffect`, потом асинхронно `useEffect`.
+- В RN host config — Fabric renderer вместо `react-dom`, но reconciler тот же самый пакет.
+> React keeps a fiber tree where every component is a unit of work with its props, state and effect flags. During the render phase React calls components and compares the new elements with the current tree. This phase must be pure, because React can pause it, restart it or throw it away for a more urgent update. The commit phase is synchronous: React applies the changes to the host, in React Native that's the Fabric shadow tree, then runs layout effects and later normal effects. The same reconciler is used for web and React Native, only the host renderer is different.
+! В списке сообщений использовали `index` как `key`. При вставке нового сообщения сверху React сопоставлял элементы по позиции, и состояние «раскрыто/свёрнуто» и введённый текст ответа «переезжали» на соседние сообщения. Переход на `message.id` решил баг.
+? Why is it dangerous to have side effects, like sending analytics, directly in the render body?
+
+## {Senior} 20 | How does the component lifecycle map to hooks? useEffect vs useLayoutEffect in React Native.
+~ Как жизненный цикл компонента отображается на хуки? useEffect vs useLayoutEffect в React Native.
+= Mount/update/unmount выражаются через эффекты и их cleanup. useLayoutEffect выполняется синхронно после commit и до отрисовки — в Fabric это позволяет синхронно измерить вью. useEffect — после отрисовки.
+**Lifecycle → hooks:**
+- `constructor` → инициализация `useState(() => init)` / `useRef`.
+- `componentDidMount` → `useEffect(() => {...}, [])`.
+- `componentDidUpdate` → `useEffect` с зависимостями.
+- `componentWillUnmount` → cleanup-функция эффекта.
+- `shouldComponentUpdate` → `React.memo`.
+- `getDerivedStateFromError` / `componentDidCatch` — только классы (Error Boundary).
+**Порядок:** render → commit → `useLayoutEffect` (синхронно, блокирует отрисовку) → кадр отрисован → `useEffect`.
+**В React Native:**
+- В legacy-архитектуре `useLayoutEffect` не давал реальной гарантии: layout считался асинхронно на shadow thread, `measure` возвращал данные позже.
+- В Fabric `useLayoutEffect` + `ref.current.measure()` (или `measureInWindow`, `getBoundingClientRect`-подобные DOM API в новой архитектуре) работают синхронно — можно позиционировать тултип до первого кадра.
+**Особенности RN-экранов:** экран в stack-навигации не размонтируется при переходе вперёд, поэтому «при каждом показе экрана» — это `useFocusEffect`, а не `useEffect`.
+```tsx
+useFocusEffect(
+  useCallback(() => {
+    const sub = AppState.addEventListener('change', onAppState)
+    refetch()
+    return () => sub.remove()          // при уходе с экрана
+  }, [refetch]),
+)
+```
+> Mounting, updating and unmounting are expressed with effects: an effect with an empty array runs after mount, dependencies control updates, and the cleanup runs before the next effect and on unmount. useLayoutEffect runs synchronously after commit but before the frame is painted, so in Fabric I can measure a view and position a tooltip without flicker. In navigation, screens often stay mounted, so for logic that should run every time a screen is shown I use useFocusEffect.
+! На экране товара обновление цены делали в `useEffect` с `[]`. Пользователь уходил в корзину и возвращался назад — экран не размонтировался, и цена оставалась старой. Перенесли refetch в `useFocusEffect` (и включили `refetchOnFocus`-логику React Query через `focusManager`).
+? What's the difference between unmounting a screen and blurring a screen in React Navigation, and how does it affect memory?
+
+## {Expert} 42 | How do concurrent features like useTransition and useDeferredValue work, and are they useful in React Native?
+~ Как работают concurrent features вроде useTransition и useDeferredValue и полезны ли они в React Native?
+= Они помечают обновление как низкоприоритетное: React может прервать его рендер ради срочного ввода. В RN работают только на New Architecture (Fabric), помогают держать отзывчивым ввод при тяжёлом рендере.
+- `startTransition(() => setFilter(x))`: обновление в TransitionLane, рендер прерываемый. Если пользователь снова печатает, старый рендер отбрасывается. `isPending` для индикатора.
+- `useDeferredValue(query)`: отложенная копия значения — тяжёлый список рендерится с ней, а инпут обновляется сразу.
+- Это не делает работу быстрее и не переносит её на другой поток — JS thread по-прежнему один. Это планирование: срочное первым.
+- В RN legacy-архитектура не поддерживала concurrent rendering, Fabric поддерживает (RN 0.69+ с New Architecture).
+- Suspense для данных (`useSuspenseQuery`) и `startTransition` при навигации, чтобы не показывать fallback.
+- Если тяжёлая часть — не рендер, а вычисление (сортировка 10k элементов), transition не поможет: нужен перенос работы (бэкенд, батчи, мемоизация).
+```tsx
+const [query, setQuery] = useState('')
+const deferredQuery = useDeferredValue(query)
+const results = useMemo(() => filterProducts(all, deferredQuery), [all, deferredQuery])
+<TextInput value={query} onChangeText={setQuery} />
+<ProductList data={results} />
+```
+> Transitions mark an update as non-urgent, so React can interrupt its rendering when the user types again and handle the urgent update first. useDeferredValue gives a delayed copy of a value, so a heavy list re-renders with the old value while the input stays responsive. In React Native this needs the New Architecture, because the old renderer didn't support concurrent rendering. It's scheduling, not parallelism, so it doesn't help with expensive calculations outside rendering.
+! Локальный поиск по справочнику из 3000 аптек: каждый символ перерисовывал весь список и инпут «залипал». `useDeferredValue` + `memo` списка сделали ввод мгновенным, а список догоняет через кадр-два.
+? Why doesn't useTransition help if the slow part is a synchronous sort of 50,000 items?
+
+# js | JavaScript Advanced | Event loop, замыкания, асинхронность, память.
+
+## [!] {Senior} 9 | Explain the event loop, microtasks and macrotasks. Is it different in React Native?
+~ Объясни event loop, микрозадачи и макрозадачи. Отличается ли это в React Native?
+= Сначала синхронный код, затем вся очередь микрозадач (промисы, await), затем одна макрозадача (таймер, событие), затем снова все микрозадачи. В RN New Architecture event loop приведён к модели веба: task → microtasks → update rendering.
+**Модель:**
+- Call stack выполняет синхронный код.
+- Microtasks: `Promise.then`, код после `await`, `queueMicrotask`. Выполняются все, пока очередь не опустеет (микрозадача может добавлять новые — можно «заморить» event loop).
+- Macrotasks: `setTimeout`, `setInterval`, события, сетевые колбэки, нативные события в RN.
+- После каждой задачи — все микрозадачи, затем (в вебе и в RN New Arch) этап обновления рендеринга.
+**В React Native:**
+- Hermes поддерживает нативные промисы и очередь микрозадач.
+- В New Architecture RN реализует web-like event loop: задача → микрозадачи → update rendering (в т.ч. синхронные layout-эффекты, обновления, запрошенные через `useLayoutEffect`). Это даёт предсказуемый порядок и корректную работу `useLayoutEffect` и microtask-ориентированных библиотек.
+- `setImmediate` в RN существует (исторически использовался полифиллом промисов).
+- `requestAnimationFrame` вызывается перед кадром; `InteractionManager.runAfterInteractions` откладывает задачу до окончания анимаций и жестов (сейчас часто заменяют на `requestIdleCallback`/`setTimeout`).
+```js
+console.log('A')
+setTimeout(() => console.log('B'), 0)
+Promise.resolve().then(() => console.log('C'))
+;(async () => { console.log('D'); await null; console.log('E') })()
+console.log('F')
+// A D F C E B
+```
+> JavaScript runs synchronous code first. When the call stack is empty, the engine runs all microtasks, like promise callbacks and code after await, and only then takes one macrotask, like a timer or an event, and drains the microtasks again. In the New Architecture React Native follows the same model as the web: a task, then all microtasks, then a rendering update. This is why a long chain of microtasks or a long synchronous task blocks touches and UI updates.
+! После логина приложение запускало цепочку из ~200 последовательных промисов (миграция данных в локальную БД), и кнопки не реагировали 2 секунды: микрозадачи не отдавали управление. Разбили миграцию на батчи с `await new Promise(r => setTimeout(r, 0))` между ними — UI остался отзывчивым.
+? Can a microtask starve the event loop? Show an example and explain what the user would see.
+
+## {Senior} 17 | What is a closure? Explain stale closures in hooks and how to fix them.
+~ Что такое замыкание? Объясни stale closure в хуках и как их исправлять.
+= Замыкание — функция плюс ссылка на лексическое окружение, где она создана. Каждый рендер создаёт новое окружение, и колбэк из старого рендера видит старые props и state — это stale closure.
+- Функция «помнит» переменные внешней области даже после её завершения. На этом построены хуки, debounce, фабрики, приватные данные.
+- В React каждый рендер — отдельный вызов функции со своими `props` и `state`. Колбэк, созданный в рендере N, видит значения рендера N.
+**Где stale closure ловят в RN:**
+- `setInterval` в `useEffect` с `[]` — внутри всегда начальный state.
+- Подписки на нативные события (`AppState`, WebSocket, push-листенеры), созданные один раз.
+- Колбэки в Reanimated `runOnJS` или в `useCallback` с неполными зависимостями.
+**Исправления:**
+- Functional update: `setCount(c => c + 1)`.
+- Правильные зависимости (ESLint `react-hooks/exhaustive-deps`).
+- Ref с актуальным значением (latest ref pattern) для подписок, которые не хочется пересоздавать.
+- `useEffectEvent` (стабилен в React 19.2) — функция, которая всегда видит последние props/state, но не является зависимостью эффекта.
+```tsx
+const onMessageRef = useRef(onMessage)
+useLayoutEffect(() => { onMessageRef.current = onMessage })
+
+useEffect(() => {
+  const ws = new WebSocket(url)
+  ws.onmessage = (e) => onMessageRef.current(JSON.parse(e.data))  // всегда свежий колбэк
+  return () => ws.close()
+}, [url])
+```
+> A closure is a function together with the variables from the scope where it was created. In React every render has its own props and state, so a callback created in one render keeps seeing that render's values. If an interval or a native subscription is created once, it keeps the old values: this is a stale closure. I fix it with functional updates, correct dependencies, a ref that holds the latest callback, or useEffectEvent in React 19.2.
+! В чате WebSocket-подписка создавалась один раз и вызывала `onMessage`, который проверял `currentChatId`. После переключения чата сообщения помечались прочитанными в старом чате. Решение — latest-ref паттерн для обработчика, без переподключения сокета.
+? Why not just add every value to the dependency array and reconnect the WebSocket every time?
+
+## {Senior} 35 | Implement a function that runs async tasks with a concurrency limit.
+~ Реализуй функцию, которая выполняет асинхронные задачи с ограничением параллельности.
+= Пул из N «воркеров»: каждый берёт следующую задачу из общего индекса, пока задачи не кончатся. Результаты сохраняются по индексу.
+Типичная live-coding задача для Senior: загрузить 100 фото, но не больше 3 одновременно (сеть, память, лимиты API).
+```ts
+async function runWithLimit<T>(
+  tasks: Array<() => Promise<T>>,
+  limit: number,
+): Promise<PromiseSettledResult<T>[]> {
+  const results: PromiseSettledResult<T>[] = new Array(tasks.length)
+  let next = 0
+
+  async function worker() {
+    while (next < tasks.length) {
+      const i = next++                       // однопоточный JS: без гонки
+      try {
+        results[i] = { status: 'fulfilled', value: await tasks[i]() }
+      } catch (reason) {
+        results[i] = { status: 'rejected', reason }
+      }
+    }
+  }
+
+  await Promise.all(Array.from({ length: Math.min(limit, tasks.length) }, worker))
+  return results
+}
+```
+- Порядок результатов сохраняется через индекс.
+- Ошибка одной задачи не останавливает остальные (как `allSettled`).
+- Расширения, о которых спросят: отмена через `AbortSignal`, retry с backoff для упавших, прогресс (`onProgress(done, total)`), приоритеты.
+- Комбинаторы: `all` (fail-fast), `allSettled`, `race` (таймаут), `any` (первый успешный).
+> I create N workers that share one index. Each worker takes the next task, awaits it and stores the result by its index, so the order is kept. JavaScript is single-threaded, so incrementing the index is safe. I catch errors per task so one failure doesn't stop the others, like allSettled. In a real app I would also add an AbortSignal for cancellation and retries with backoff.
+! Загрузка фотоотчёта курьера (до 40 фото) через `Promise.all` вызывала таймауты на мобильном интернете и OOM на старых Android. Ограничили параллельность до 3, добавили retry и прогресс-бар — процент успешных загрузок вырос, крашей не стало.
+? How would you add cancellation, so that leaving the screen stops all pending uploads?
+
+## {Expert} 44 | How does garbage collection work in Hermes, and when would you use WeakMap or WeakRef?
+~ Как работает сборка мусора в Hermes и когда использовать WeakMap или WeakRef?
+= GC удаляет объекты, недостижимые от корней. Hermes использует Hades — concurrent GC с короткими паузами. WeakMap хранит данные, привязанные к объекту, не мешая его удалению.
+- Mark-and-sweep: от корней (глобальные объекты, стек, хендлы из нативного кода) помечаются достижимые объекты, остальные удаляются.
+- Generational: молодые объекты собираются часто и быстро, старые — реже.
+- Hades (Hermes): основная работа старого поколения идёт параллельно с JS, паузы обычно единицы миллисекунд — меньше фризов анимаций.
+- JSI-объекты: `HostObject` живёт, пока JS держит на него ссылку; нативная сторона не должна держать сильные ссылки на JS-функции бесконечно (утечка).
+**WeakMap / WeakSet:** ключ — объект, ссылка слабая. Кэш вычислений для объекта, метаданные для экземпляра без утечки.
+**WeakRef / FinalizationRegistry:** слабая ссылка на объект (может исчезнуть в любой момент) и колбэк после сборки. Использовать редко, поведение GC недетерминировано, нельзя строить на нём логику.
+```ts
+const formatted = new WeakMap<Product, string>()
+export const formatPrice = (p: Product) => {
+  if (!formatted.has(p)) formatted.set(p, new Intl.NumberFormat(locale, { style: 'currency', currency: p.currency }).format(p.price / 100))
+  return formatted.get(p)!
+}
+```
+> The garbage collector removes objects that are not reachable from roots like globals, the stack and handles from native code. Hermes uses a concurrent collector called Hades, so pauses are short and animations don't freeze. I use WeakMap when I want to cache data for an object without keeping that object alive. WeakRef and FinalizationRegistry exist, but GC timing is not predictable, so I don't build business logic on them.
+! Глобальный `Map` с кэшем отформатированных цен по объекту товара рос всю сессию и держал старые ответы API в памяти. Замена на `WeakMap` позволила GC освобождать товары с закрытых экранов.
+? Can a native module cause a JavaScript memory leak through JSI? How?
+
+# ts | TypeScript | Типобезопасная архитектура, а не синтаксис.
+
+## {Senior} 28 | How do you build a type-safe API layer in a React Native app?
+~ Как построить типобезопасный слой API в React Native приложении?
+= Типы из одного источника (OpenAPI/GraphQL codegen или Zod-схемы), валидация ответа на границе, generic-клиент и queryOptions, чтобы ключи и данные React Query были типизированы.
+- Ответ сети — фактически `unknown`. Каст `as Product` прячет ломающее изменение контракта до краша у пользователя.
+- Источник типов: генерация из OpenAPI (`openapi-typescript`, Orval) или GraphQL Codegen; либо Zod/Valibot-схемы и `z.infer`.
+- Валидация на границе: критичные данные (цены, корзина, профиль) парсить схемой, при ошибке — понятная ошибка в Sentry, а не `undefined is not an object` в UI.
+- Generic-клиент с типизированными эндпоинтами и `queryOptions` для связи ключа и типа.
+```ts
+const ProductSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  priceMinor: z.number().int(),
+  currency: z.enum(['PLN', 'EUR', 'UAH']),
+})
+type Product = z.infer<typeof ProductSchema>
+
+async function request<T>(path: string, schema: z.ZodType<T>, signal?: AbortSignal): Promise<T> {
+  const res = await http.get(path, { signal })
+  const parsed = schema.safeParse(res.data)
+  if (!parsed.success) throw new ContractError(path, parsed.error)
+  return parsed.data
+}
+
+export const productQuery = (id: string) =>
+  queryOptions({
+    queryKey: ['product', id] as const,
+    queryFn: ({ signal }) => request(`/products/${id}`, ProductSchema, signal),
+  })
+```
+> I treat API responses as unknown and generate types from one source, either OpenAPI or GraphQL codegen, or Zod schemas with z.infer. For important data I validate the response at the boundary, so a broken contract becomes a clear error in Sentry instead of a crash deep in the UI. A generic request function and queryOptions connect query keys with data types, so the whole React Query layer is typed.
+! Бэкенд поменял `price` с числа на строку `"129.99"` для одной страны. Без валидации корзина складывала строки («129.9949.99»). С Zod-схемой ответ отбрасывался с ContractError, мы увидели проблему в Sentry за час и откатили бэкенд.
+? Validating every response costs CPU on low-end devices. Where would you validate and where would you skip it?
+
+## {Senior} 31 | How do you model screen state with discriminated unions?
+~ Как моделировать состояние экрана через discriminated unions?
+= Union объектов с общим полем-меткой (status): в каждом состоянии есть только допустимые поля, невозможные комбинации исключены типами, а exhaustive check ловит забытые случаи.
+- Плохо: `{ isLoading: boolean; error?: Error; data?: Order[] }` — возможны `isLoading: true` + `error` + `data` одновременно.
+- Хорошо: каждое состояние — отдельный вариант union. TS сужает тип по `status`.
+- `never` в `default` даёт ошибку компиляции, если добавили новый статус и забыли обработать.
+- Применение: экран, платёжный флоу (state machine), события WebSocket, push-payload, actions редьюсера.
+```ts
+type CheckoutState =
+  | { status: 'idle' }
+  | { status: 'paying'; orderId: string }
+  | { status: 'requires3ds'; orderId: string; redirectUrl: string }
+  | { status: 'paid'; orderId: string; receiptUrl: string }
+  | { status: 'failed'; orderId: string; reason: 'declined' | 'network' | 'timeout' }
+
+function assertNever(x: never): never { throw new Error(`Unhandled: ${JSON.stringify(x)}`) }
+
+function title(s: CheckoutState) {
+  switch (s.status) {
+    case 'idle': return 'Pay'
+    case 'paying': return 'Processing…'
+    case 'requires3ds': return 'Confirm in your bank'
+    case 'paid': return 'Done'
+    case 'failed': return s.reason === 'declined' ? 'Card declined' : 'Try again'
+    default: return assertNever(s)
+  }
+}
+```
+> Instead of several booleans I model state as a discriminated union with a status field. Each variant has only the fields that make sense for it, so impossible states like loading with an error can't be represented. TypeScript narrows the type in every branch, and an assertNever in the default case gives a compile error when someone adds a new status and forgets to handle it.
+! В платёжном флоу добавили статус 3-D Secure. Благодаря `assertNever` сборка упала в трёх местах, где этот статус не обрабатывался, — включая экран, который иначе показывал бы «Оплачено» до подтверждения банком.
+? How would you type a WebSocket message stream where each event type has a different payload?
+
+## {Expert} 46 | Write a type that extracts route params, or explain how conditional types with infer work.
+~ Напиши тип, который извлекает параметры из роута, или объясни, как работают conditional types с infer.
+= Conditional type выбирает ветку по условию `extends`, `infer` «вытаскивает» часть типа. В сочетании с template literal types можно разобрать строку пути на параметры.
+```ts
+type ExtractParams<Path extends string> =
+  Path extends `${string}:${infer Param}/${infer Rest}`
+    ? { [K in Param | keyof ExtractParams<`/${Rest}`>]: string }
+    : Path extends `${string}:${infer Param}`
+      ? { [K in Param]: string }
+      : {}
+
+type P = ExtractParams<'/shop/:shopId/product/:productId'>
+// { shopId: string; productId: string }
+
+type Awaited2<T> = T extends Promise<infer U> ? Awaited2<U> : T
+type ItemOf<T> = T extends readonly (infer U)[] ? U : never
+```
+- Conditional types дистрибутивны по union, если параметр «голый» (`T extends ...`). Обёртка `[T] extends [...]` отключает это.
+- `infer` можно использовать в позиции аргументов, результата, элементов кортежа, частей строки.
+- Практика: типизированные deep links и роуты, ключи переводов, `ReturnType`/`Parameters`, извлечение типа данных из `queryOptions`.
+- Senior-нюанс: сложные типы замедляют компилятор и IDE — в продукте выбирать читаемость, сложные типы прятать в библиотечный слой.
+> A conditional type picks a branch based on an extends check, and infer captures part of the matched type into a new type variable. Combined with template literal types, I can parse a route string like '/product/:id' and get an object type with its params. I use this in shared typed routing or translation keys, but I keep these types in a small library layer, because very complex types make the code and the IDE slower.
+! Для deep links собрали типизированную карту роутов: `link('/order/:orderId', { orderId })` не компилировался без параметра. Это убрало класс багов, когда пуш открывал экран заказа с `undefined`.
+? Why are conditional types distributive over unions, and when is that a problem?
+
+# state | State Management | Server state vs client state, кэш, оптимистичные обновления, персистентность.
+
+## [!] {Senior} 11 | How do you choose a state management solution? Redux Toolkit, Zustand, React Query, Context.
+~ Как выбрать решение для управления состоянием? Redux Toolkit, Zustand, React Query, Context.
+= Сначала разделить типы состояния: серверное — React Query (или RTK Query), глобальное клиентское — Zustand или Redux Toolkit, редко меняющееся — Context, локальное — useState, навигационное — в навигаторе, фильтры — в параметрах.
+**Классификация состояния (главное в ответе):**
+- Server state: данные, источник правды на бэкенде (товары, заказы, профиль). Нужны кэш, дедупликация, refetch, retry, инвалидация, офлайн → **TanStack Query** или **RTK Query**.
+- Global client state: сессия, корзина до синхронизации, настройки, UI-флаги между экранами → **Zustand** или **Redux Toolkit**.
+- Rarely changing config: тема, локаль, feature flags → **Context**.
+- Local UI state: инпут, раскрыт ли блок → **useState/useReducer**.
+- Navigation state: параметры экрана — в навигаторе.
+- Form state → react-hook-form.
+**Сравнение:**
+- Redux Toolkit: строгий однонаправленный поток, middleware, отличный DevTools, предсказуемость в больших командах, RTK Query для серверных данных. Минус — больше кода и церемоний.
+- Zustand: минимум кода, нет провайдера, подписка по селекторам, работает вне React (в сервисах, навигации), `persist` middleware. Минус — меньше структуры, нужна договорённость в команде.
+- Context: не стейт-менеджер, а транспорт значения; ререндерит всех потребителей.
+- Главная ошибка: копировать данные `useQuery` в стор — два источника правды.
+> I start by splitting state into types. Server data like products or orders goes to React Query, because I need caching, deduplication, refetching and invalidation. Global client state like the session or app settings goes to a small Zustand store, or Redux Toolkit if the team is large and wants strict structure and middleware. Rarely changing values like theme or locale go to context, and local UI state stays in useState. The main mistake I avoid is copying server data into a client store, because then we have two sources of truth.
+! В унаследованном приложении весь ответ API хранился в Redux с ручными `isLoading`/`error` на каждый экран — ~4000 строк саг и редьюсеров. Перенесли серверные данные на React Query, в Redux остались сессия и настройки. Код state-слоя сократился примерно в 3 раза, ушли баги с устаревшими данными после возврата на экран.
+? Your team already uses Redux Toolkit everywhere. Would you introduce React Query or use RTK Query? Why?
+
+## {Senior} 23 | How does Zustand avoid unnecessary re-renders, and how is it different from Redux under the hood?
+~ Как Zustand избегает лишних ререндеров и чем он отличается от Redux внутри?
+= Оба — внешний стор с подпиской через useSyncExternalStore. Компонент ререндерится, только если изменился результат его селектора. Redux добавляет actions, reducers и middleware, Zustand — просто функции set/get.
+- Внешний стор: объект состояния + множество подписчиков. `set()` создаёт новое состояние и уведомляет подписчиков.
+- Хук `useStore(selector)` построен на `useSyncExternalStore`: после изменения вызывается селектор, результат сравнивается через `Object.is` — нет изменения, нет ререндера.
+- Селектор, возвращающий новый объект/массив каждый раз, ломает это (а в Zustand v5 может привести к бесконечному циклу) → `useShallow`.
+- Redux: `dispatch(action)` → reducer (чистая функция, Immer в RTK) → новый state → `useSelector` с той же моделью подписки. Плюс middleware (thunk, listener), DevTools time-travel, сериализуемость.
+- Zustand можно использовать вне React: `useCartStore.getState()`, `subscribe` — удобно в interceptors API, обработчиках пушей.
+```ts
+type CartStore = {
+  items: Record<string, number>
+  add: (id: string) => void
+}
+export const useCartStore = create<CartStore>()(
+  persist(
+    (set) => ({
+      items: {},
+      add: (id) => set((s) => ({ items: { ...s.items, [id]: (s.items[id] ?? 0) + 1 } })),
+    }),
+    { name: 'cart', storage: createJSONStorage(() => mmkvStorage) },
+  ),
+)
+
+const qty = useCartStore((s) => s.items[productId] ?? 0)         // ререндер только при изменении qty
+const { add } = useCartStore(useShallow((s) => ({ add: s.add })))
+```
+> Both Zustand and Redux keep state outside React and connect components through useSyncExternalStore. A component runs its selector after every change and re-renders only if the selected value changed by reference. Redux adds actions, reducers, middleware and great DevTools, which is good for strict structure. Zustand is just a store with set and get, so it's smaller and easy to use outside React, for example in an API interceptor. If a selector returns a new object every time, I wrap it in useShallow.
+! Push-обработчик (вне React-дерева) должен был обновить счётчик непрочитанных. С Zustand это `useInboxStore.getState().increment()` в обработчике `messaging().onMessage` — без провайдеров и хаков с навигационным ref.
+? Why can a selector like s => ({ a: s.a, b: s.b }) cause an infinite loop in Zustand v5?
+
+## {Senior} 24 | How do you implement optimistic updates and cache invalidation with React Query?
+~ Как реализовать оптимистичные обновления и инвалидацию кэша с React Query?
+= В onMutate отменить текущие запросы, сохранить снапшот, обновить кэш сразу; в onError откатить; в onSettled инвалидировать. Ключи — через фабрику, чтобы инвалидировать точечно.
+```ts
+export const cartKeys = { all: ['cart'] as const, detail: () => [...cartKeys.all, 'detail'] as const }
+
+export function useAddToCart() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (item: CartItem) => api.addToCart(item),
+    onMutate: async (item) => {
+      await qc.cancelQueries({ queryKey: cartKeys.detail() })      // чтобы старый ответ не перезаписал
+      const prev = qc.getQueryData<Cart>(cartKeys.detail())
+      qc.setQueryData<Cart>(cartKeys.detail(), (c) => c && { ...c, items: [...c.items, item] })
+      return { prev }
+    },
+    onError: (_e, _item, ctx) => ctx?.prev && qc.setQueryData(cartKeys.detail(), ctx.prev),
+    onSettled: () => qc.invalidateQueries({ queryKey: cartKeys.all }),
+  })
+}
+```
+- Когда оптимистично: действие почти всегда успешно и легко откатывается (лайк, корзина, отметка прочитанным). Не для платежей и необратимых действий.
+- Альтернатива для простых случаев: оптимистичный UI через `variables` мутации (`useMutationState`) без изменения кэша.
+- Инвалидация: `invalidateQueries` помечает данные устаревшими и рефетчит активные. Ключи иерархические, поэтому `['cart']` инвалидирует всё про корзину.
+- Офлайн: `networkMode: 'offlineFirst'`, мутации ставятся на паузу без сети и продолжают при восстановлении; с `persistQueryClient` + `setMutationDefaults` переживают перезапуск приложения.
+- Гонки: два быстрых клика — сервер должен быть идемпотентным (idempotency key), а клиент — не полагаться на порядок ответов.
+> In onMutate I cancel running queries for the cart, save a snapshot of the cache and update the cache immediately, so the user sees the change at once. If the request fails, onError restores the snapshot, and in onSettled I invalidate the cart query to sync with the server. I use a query key factory, so invalidation is precise. I only do this for actions that almost always succeed and are easy to roll back, never for payments.
+! Кнопка «В избранное» ждала ответ 300–800 мс на мобильной сети, пользователи жали повторно и получали дубли. Перевели на оптимистичное обновление + идемпотентный эндпоинт — отклик мгновенный, дублей нет, откат при ошибке показывает тост.
+? Two optimistic mutations on the same cart run at the same time and the first one fails. What happens to the rollback, and how do you handle it?
+
+## {Middle} 36 | How do you persist state between app launches?
+~ Как сохранять состояние между запусками приложения?
+= Клиентский стор — через persist middleware в MMKV, серверный кэш — persistQueryClient, секреты — только в Keychain/Keystore. Обязательно версия схемы и миграции.
+- **Zustand:** `persist` с `createJSONStorage(() => mmkvStorage)`; `partialize` — сохранять только нужные поля; `version` + `migrate` при изменении формы данных; `onRehydrateStorage` для флага готовности.
+- **Redux:** redux-persist (устарел, но распространён) или свой listener middleware, который пишет в MMKV.
+- **React Query:** `PersistQueryClientProvider` + `createSyncStoragePersister` (MMKV) или async-persister; `buster` для сброса кэша при новой версии приложения; `gcTime` должен быть ≥ `maxAge` персиста.
+- **Не сохранять:** токены и PII в обычном storage (только `expo-secure-store` / `react-native-keychain`), огромные ответы (лучше SQLite), временный UI-state.
+- **Hydration gate:** не рендерить экраны, зависящие от сохранённого state, до регидрации (или использовать синхронный MMKV — тогда регидрация мгновенная).
+```ts
+persist(storeCreator, {
+  name: 'settings',
+  version: 2,
+  storage: createJSONStorage(() => mmkvStorage),
+  partialize: (s) => ({ locale: s.locale, theme: s.theme }),
+  migrate: (old: any, version) => (version < 2 ? { ...old, theme: old.darkMode ? 'dark' : 'light' } : old),
+})
+```
+> For client state I use Zustand's persist middleware with MMKV, I persist only the fields I need and I add a version with a migrate function, because the data shape changes between app versions. For server data I persist the React Query cache with a buster tied to the app version. Tokens and personal data never go to normal storage, only to Keychain or Keystore.
+! После релиза поле `darkMode: boolean` заменили на `theme: 'light' | 'dark' | 'system'` без миграции — у части пользователей приложение падало при регидрации. Добавили `version` и `migrate`, а также try/catch с fallback на дефолтное состояние.
+? Why can a persisted React Query cache show an old price after an app update, and how do you prevent it?
+
+# nav | Navigation | React Navigation, deep links, auth flow.
+
+## {Senior} 22 | How does React Navigation work, and how do you keep navigation fast in a large app?
+~ Как работает React Navigation и как сохранить быструю навигацию в большом приложении?
+= Навигатор хранит state дерева роутов и рендерит экраны; native-stack использует нативные контроллеры. Для скорости: native-stack, ленивые экраны, лёгкие экраны при переходе, тяжёлое — после анимации, без глобального контекста над всеми экранами.
+- Навигационный state — дерево: `{ index, routes: [{ name, key, params, state? }] }`. Вложенные навигаторы имеют свой state внутри route.
+- `@react-navigation/native-stack` использует `react-native-screens`: UINavigationController (iOS) и Fragments (Android), нативные анимации и жесты. JS-stack (`@react-navigation/stack`) гибче, но анимации зависят от JS/Reanimated.
+- Экраны в стеке остаются смонтированными. `react-native-screens` «замораживает» невидимые экраны (`freezeOnBlur` / react-freeze) — они не ререндерятся от изменений стора.
+- Табы монтируются лениво (`lazy: true` по умолчанию).
+- Static API (React Navigation 7): конфигурация объектом, автоматические типы и deep links.
+**Как ускорять переход:**
+- Открывать экран с минимальным контентом (скелет, данные из кэша списка через `initialData`/`placeholderData`), тяжёлые части — после окончания анимации (`navigation.addListener('transitionEnd')` или `InteractionManager`).
+- Prefetch данных при нажатии на элемент списка (`queryClient.prefetchQuery`) до перехода.
+- Не держать провайдер с часто меняющимся value над `NavigationContainer`.
+- Не передавать в params большие объекты и функции: params сериализуются (persist, deep links) — передавать id.
+> The navigator keeps a state tree of routes and renders the screens. I prefer native-stack, because it uses native navigation controllers and fragments with native animations. Screens in a stack stay mounted, so I enable freezeOnBlur to stop hidden screens from re-rendering. To make transitions fast, I show the new screen with cached data or a skeleton, prefetch data when the user taps, and render heavy parts after the transition ends. I pass only ids in params, not big objects.
+! Переход «список → карточка товара» занимал ~600 мс на Android: карточка сразу рендерила галерею из 15 фото, отзывы и рекомендации. Показали шапку из данных списка, а остальное — после `transitionEnd`, плюс prefetch по `onPressIn`. Переход стал плавным, воспринимаемая скорость — мгновенная.
+? Why shouldn't you pass a callback function in navigation params?
+
+## {Senior} 25 | How do you implement deep linking and universal links, including links that need login?
+~ Как реализовать deep linking и universal links, включая ссылки, требующие логина?
+= Настроить ассоциацию домена (AASA и assetlinks.json), конфиг linking в навигации, обработку холодного и тёплого старта, и сохранять ссылку до логина, чтобы открыть после.
+- **Custom scheme** (`myshop://order/42`) — просто, но любое приложение может зарегистрировать ту же схему, без приложения ссылка не работает.
+- **Universal Links (iOS):** `apple-app-site-association` на `https://domain/.well-known/`, entitlement `applinks:domain`. **App Links (Android):** `assetlinks.json` с SHA-256 подписи, `intent-filter` с `android:autoVerify="true"`. Без приложения открывается сайт.
+- **React Navigation:** `linking = { prefixes, config: { screens: {...} } }`, `getStateFromPath` для кастомного разбора. Вложенные навигаторы описываются вложенным `screens`.
+- **Холодный старт:** `Linking.getInitialURL()` (React Navigation делает сам), тёплый — событие `url`.
+- **Пуши:** тап по уведомлению → тот же путь (`subscribe` в конфиге linking: Firebase `getInitialNotification` / `onNotificationOpenedApp`).
+- **Ссылка до логина:** auth-навигатор не содержит экрана заказа → сохранить pending URL, после логина `Linking.openURL(pending)` или `navigation.reset`.
+- **Безопасность:** валидировать параметры (id, промокоды), не выполнять действия (оплата, удаление) только по ссылке без подтверждения.
+- Тестирование: `xcrun simctl openurl booted ...`, `adb shell am start -W -a android.intent.action.VIEW -d ...`.
+> For universal links on iOS and app links on Android, I host the association files on our domain and add the entitlements and intent filters with autoVerify, so normal https links open the app, or the website if the app is not installed. In React Navigation I describe the path-to-screen mapping in the linking config, including nested navigators. I handle cold start, warm start and notification taps through the same linking logic. If the screen needs login, I save the URL, show the login flow and open the saved link after successful login.
+! Маркетинговые письма вели на `https://shop.com/promo/xyz`, но на Android открывался браузер. Причина — `assetlinks.json` содержал SHA-256 upload-ключа, а не ключа Play App Signing. Добавили правильный отпечаток — app links начали верифицироваться, переходы из писем выросли.
+? A universal link works when you tap it in Notes, but not when you paste it into Safari's address bar. Why?
+
+## {Middle} 37 | How do you implement an authentication flow and type-safe navigation?
+~ Как реализовать auth flow и типобезопасную навигацию?
+= Условный рендер групп экранов по состоянию сессии (а не navigate после логина), splash пока восстанавливается сессия, и типы параметров через ParamList или static API.
+- Рекомендуемый паттерн: разные наборы экранов в зависимости от `isSignedIn`. При логине React Navigation сам переключает дерево, кнопка «назад» не вернёт на логин.
+- Пока токен читается из secure storage — splash/loader (`isRestoring`).
+- При logout — очистить кэш React Query, сторы, отписаться от пушей, затем state сессии → экраны сменятся.
+- Типизация: `RootStackParamList`, `NativeStackScreenProps<RootStackParamList, 'Product'>`, `declare global { namespace ReactNavigation { interface RootParamList extends RootStackParamList {} } }` для `useNavigation()` без дженериков. Static API выводит типы автоматически.
+```tsx
+export type RootStackParamList = {
+  Tabs: NavigatorScreenParams<TabParamList>
+  Product: { productId: string }
+  Checkout: undefined
+  SignIn: undefined
+}
+
+function RootNavigator() {
+  const status = useSession((s) => s.status)    // 'restoring' | 'signedIn' | 'signedOut'
+  if (status === 'restoring') return <Splash />
+  return (
+    <Stack.Navigator>
+      {status === 'signedIn' ? (
+        <>
+          <Stack.Screen name="Tabs" component={Tabs} />
+          <Stack.Screen name="Product" component={ProductScreen} />
+          <Stack.Screen name="Checkout" component={CheckoutScreen} />
+        </>
+      ) : (
+        <Stack.Screen name="SignIn" component={SignInScreen} />
+      )}
+    </Stack.Navigator>
+  )
+}
+```
+> I render different groups of screens based on the session status, instead of navigating manually after login. While the token is restored from secure storage I show a splash screen. When the user logs in, React Navigation switches the tree automatically and the back button can't return to the login screen. On logout I clear the query cache and stores. For types I define a param list per navigator and register the root list globally, so useNavigation is typed everywhere.
+! После logout следующий пользователь на том же устройстве на секунду видел заказы предыдущего — кэш React Query не очищался. Добавили `queryClient.clear()` и сброс сторов в logout, плюс `userId` в ключи персональных запросов.
+? How would you handle a guest user who can browse and add to cart, but must log in only at checkout?
+
+# network | Networking and Offline-first | Сеть, авторизация, кэш, офлайн и синхронизация.
+
+## [!] {Expert} 13 | How would you design an offline-first architecture for a mobile app?
+~ Как бы ты спроектировал offline-first архитектуру мобильного приложения?
+= Локальная БД — источник правды для UI, очередь исходящих изменений (outbox), фоновая синхронизация при появлении сети, стратегия разрешения конфликтов и понятные статусы для пользователя.
+**Ключевая идея:** UI читает из локального хранилища, а не из сети. Сеть — способ синхронизировать локальные данные с сервером.
+**Компоненты:**
+- **Local store:** SQLite (`expo-sqlite`, op-sqlite), WatermelonDB (lazy, реактивные запросы, синхронизация), Realm; для простых случаев — persisted React Query + MMKV.
+- **Outbox (очередь мутаций):** каждое изменение сохраняется локально + запись в очередь с `clientId` (UUID), типом операции, payload, `createdAt`, числом попыток.
+- **Sync engine:** запускается при появлении сети (`NetInfo`), при возврате в приложение, по таймеру; pull изменений с сервера по курсору (`updatedSince` / changelog), push очереди по порядку, retry с exponential backoff.
+- **Идемпотентность:** сервер принимает `clientId`/idempotency key — повторная отправка не создаёт дубль.
+- **Конфликты:** last-write-wins по времени сервера (просто, но теряет данные), версия записи (optimistic concurrency, 409 → merge или выбор пользователя), field-level merge, CRDT для совместного редактирования.
+- **UX:** статусы «сохранено локально / синхронизируется / ошибка», офлайн-баннер, нельзя выполнить офлайн то, что требует сервера (оплата).
+**Ограничения:** фоновая синхронизация на iOS/Android ограничена ОС (`expo-background-task`, WorkManager), поэтому основная синхронизация — при открытии приложения; срочное — через push.
+**Что сказать про trade-offs:** offline-first сильно усложняет систему (миграции локальной БД, конфликты, тестирование) — нужен, когда пользователи реально работают без сети (курьеры, склад, полевые сотрудники), а для магазина часто достаточно кэша на чтение + очереди для пары действий.
+> In an offline-first app the UI reads from a local database, not from the network, and the network is only used to sync. Every change is saved locally and added to an outbox queue with a client-generated id. A sync engine runs when the connection comes back or the app returns to the foreground: it pulls server changes since the last cursor and pushes the queue in order, with retries and exponential backoff. The server uses the client id as an idempotency key, so retries don't create duplicates. For conflicts I choose a strategy per entity, for example record versions with a 409 and a merge. It adds a lot of complexity, so I'd use it only when users really work without a connection.
+! Приложение для курьеров: в подвалах и лифтах нет сети, а отметка «доставлено» с фото терялась. Сделали SQLite + outbox с UUID, фото — отдельной очередью с ограничением параллельности, синхронизация по `NetInfo` и при foreground. Потерянных доставок не стало, а конфликт «заказ отменили, пока курьер был офлайн» сервер возвращал как 409 с понятным сообщением курьеру.
+? The same order was edited offline on two devices. How do you resolve the conflict, and what does the user see?
+
+## [!] {Senior} 14 | How do you implement token refresh when several requests fail with 401 at the same time?
+~ Как реализовать обновление токена, если несколько запросов одновременно получили 401?
+= Один общий refresh-промис: первый 401 запускает обновление, остальные запросы ждут этот же промис, затем повторяются с новым токеном. Если refresh упал — logout.
+**Проблема:** экран делает 5 запросов, access token истёк → 5 параллельных refresh. Сервер с ротацией refresh-токенов примет первый и признает остальные «украденными» → пользователя выкинет.
+**Решение — single-flight:**
+```ts
+let refreshPromise: Promise<string> | null = null
+
+const refreshAccessToken = () => {
+  refreshPromise ??= (async () => {
+    try {
+      const refreshToken = await secureStore.get('refreshToken')
+      const { data } = await axios.post('/auth/refresh', { refreshToken })
+      await secureStore.set('refreshToken', data.refreshToken)   // ротация
+      tokenStore.setAccess(data.accessToken)
+      return data.accessToken
+    } finally {
+      refreshPromise = null
+    }
+  })()
+  return refreshPromise
+}
+
+api.interceptors.response.use(undefined, async (error) => {
+  const original = error.config
+  if (error.response?.status !== 401 || original._retry || original.url.includes('/auth/refresh')) {
+    throw error
+  }
+  original._retry = true
+  try {
+    const token = await refreshAccessToken()
+    original.headers.Authorization = `Bearer ${token}`
+    return api(original)
+  } catch (e) {
+    await sessionStore.getState().logout()       // очистка кэша, сторов, навигация на логин
+    throw e
+  }
+})
+```
+- Защита от бесконечного цикла: флаг `_retry`, refresh-эндпоинт не перехватывается.
+- Проактивный refresh: проверять `exp` access-токена перед запросом (с запасом 30–60 с) — меньше 401.
+- Хранение: access — в памяти (+ secure store при необходимости), refresh — Keychain/Keystore.
+- Учесть WebSocket: при refresh переподключиться с новым токеном.
+> If several requests get a 401 at the same time, I don't want several refresh calls, because with refresh token rotation the server may reject them and log the user out. So I keep one shared refresh promise: the first 401 starts the refresh, and other requests await the same promise and then retry with the new token. I mark retried requests to avoid infinite loops and never intercept the refresh endpoint itself. If the refresh fails, I log out and clear the cache. I also refresh proactively when the token is close to expiring.
+! Пользователей случайно разлогинивало после фона приложения. Причина — при возврате 6 запросов параллельно делали refresh, бэкенд с ротацией отзывал сессию после второго. Single-flight refresh + проактивная проверка `exp` при `AppState === 'active'` полностью убрали проблему.
+? Where would you store the access token and the refresh token, and why not both in AsyncStorage?
+
+## {Senior} 26 | REST vs GraphQL in a mobile app: trade-offs, caching and when to choose which.
+~ REST vs GraphQL в мобильном приложении: компромиссы, кэширование, когда что выбирать.
+= GraphQL даёт ровно нужные поля одним запросом и нормализованный кэш (Apollo/urql), но сложнее HTTP-кэш, безопасность и мониторинг. REST проще, кэшируется HTTP/CDN, хорошо с React Query.
+**GraphQL плюсы:**
+- Клиент запрашивает только нужные поля — меньше трафика, нет over-/under-fetching, один запрос вместо водопада.
+- Строгая схема и codegen типов (GraphQL Codegen) — типобезопасность «из коробки».
+- Нормализованный кэш (Apollo InMemoryCache по `__typename:id`): изменение товара обновляется во всех экранах автоматически.
+- Subscriptions для real-time, `@defer` для частичной загрузки.
+**GraphQL минусы:**
+- POST по одному эндпоинту — сложнее HTTP/CDN-кэш (решается persisted queries + GET).
+- Риск тяжёлых запросов (глубина, сложность) — нужны лимиты на сервере.
+- Ошибки приходят с 200 и `errors[]` — мониторинг и retry сложнее.
+- Сложнее инвалидация нормализованного кэша при удалении и пагинации (`typePolicies`, `merge`).
+**REST плюсы:** простота, HTTP-кэш, CDN, понятные статусы, легко с React Query; BFF (Backend for Frontend) решает проблему лишних полей.
+**Выбор:** много связанных сущностей и разных клиентов (веб, iOS, Android с разными экранами) → GraphQL. Простой домен, CDN-кэширование, публичное API → REST. В любом случае: persisted queries для мобилки (меньше payload, защита от произвольных запросов).
+```ts
+const { data } = useQuery(ProductCardDocument, { variables: { id } })   // типы из codegen
+// Apollo: optimisticResponse + update(cache) для мутаций
+```
+> GraphQL lets the mobile client request exactly the fields a screen needs in one request, and with codegen we get types from the schema. Apollo's normalized cache updates an entity on every screen automatically. The downsides are harder HTTP and CDN caching, errors that come with status 200, and the risk of expensive queries, so the server needs limits and we use persisted queries. REST is simpler, works well with CDN caching and React Query, and a BFF can solve over-fetching. I'd choose GraphQL for a complex domain with several different clients, and REST for simpler or public APIs.
+! Главный экран маркетплейса делал 7 REST-запросов (баннеры, категории, рекомендации, корзина…) — на 3G это было 4+ секунды. Перевели экран на один GraphQL-запрос через BFF с persisted queries — экран стал загружаться примерно в 2 раза быстрее, payload уменьшился на ~60%.
+? In Apollo, you delete an item from a list with a mutation, but the list on another screen still shows it. Why, and how do you fix it?
+
+## {Senior} 29 | AsyncStorage vs MMKV vs SQLite vs SecureStore: what do you use for what?
+~ AsyncStorage vs MMKV vs SQLite vs SecureStore: что для чего использовать?
+= MMKV — быстрый синхронный key-value для настроек и кэша; SQLite — структурированные и большие данные с запросами; SecureStore/Keychain — токены и секреты; AsyncStorage — легаси, простые небольшие данные.
+| | Тип | Когда |
+- **AsyncStorage:** асинхронный key-value, на Android поверх SQLite, на iOS — файлы. Медленный для частых операций, лимиты размера на Android (~6 МБ по умолчанию в старых версиях). Только небольшие, некритичные данные.
+- **MMKV (react-native-mmkv):** memory-mapped файл, синхронный доступ через JSI (в разы быстрее AsyncStorage), поддерживает шифрование (ключ хранить в Keychain). Настройки, флаги, persist Zustand/React Query, кэш на старте.
+- **SQLite (expo-sqlite, op-sqlite) / WatermelonDB / Drizzle:** структурированные данные, тысячи записей, индексы, фильтрация, пагинация, транзакции, офлайн-синхронизация.
+- **Keychain / Keystore (`expo-secure-store`, `react-native-keychain`):** токены, ключи шифрования, PIN. Аппаратная защита, опция биометрии (`accessControl`). Медленно и небольшие значения — не для больших данных.
+- **Файлы (`expo-file-system`):** фото, PDF, офлайн-медиа.
+**Нюансы:** данные Keychain на iOS переживают удаление приложения (нужно чистить при первом запуске после переустановки), бэкапы Android (`allowBackup`) могут восстановить старые данные.
+> I use MMKV for settings, flags and persisted stores, because it's synchronous through JSI and much faster than AsyncStorage. For structured data with thousands of records, filters and offline sync I use SQLite or WatermelonDB. Tokens and encryption keys go to Keychain or Keystore through secure storage, and big files go to the file system. AsyncStorage is mostly legacy for me now.
+! Приложение на старте делало ~25 `AsyncStorage.getItem` перед первым экраном — 400–700 мс на Android. Переход на MMKV сделал чтение синхронным, и первый экран рендерится сразу с нужными настройками.
+? On iOS, a user deleted and reinstalled the app and was still logged in. Why, and how do you handle it?
+
+## {Senior} 34 | How do you handle retries, request cancellation and deduplication?
+~ Как организовать повторы запросов, отмену и дедупликацию?
+= Retry только для идемпотентных запросов и временных ошибок, с exponential backoff и jitter; отмена через AbortController (React Query передаёт signal); дедупликация одинаковых запросов через общий промис или кэш React Query.
+**Retry:**
+- Повторять: сетевые ошибки, таймауты, 5xx, 429 (с учётом `Retry-After`). Не повторять: 4xx (кроме 408/429), неидемпотентные POST без idempotency key.
+- Exponential backoff с jitter: `delay = min(cap, base * 2^attempt) * random(0.5..1)` — чтобы тысячи клиентов не долбили сервер одновременно после падения.
+- В React Query: `retry: (count, err) => isRetryable(err) && count < 3`, `retryDelay`.
+**Отмена:**
+- `AbortController` + `signal` в fetch/axios. React Query передаёт `signal` в `queryFn` и отменяет запрос при размонтировании, если данные никому не нужны.
+- Поиск: новый ввод отменяет предыдущий запрос (иначе race condition: старый ответ придёт позже).
+**Дедупликация:**
+- React Query дедуплицирует одинаковые `queryKey` автоматически.
+- Вне React Query — map in-flight промисов по ключу.
+**Сеть на мобилке:** `NetInfo` для офлайн-состояния (`onlineManager`), таймауты короче на мобильных сетях, сжатие (gzip/brotli), HTTP/2.
+```ts
+const retryDelay = (attempt: number) => Math.min(30_000, 1000 * 2 ** attempt) * (0.5 + Math.random() / 2)
+```
+> I retry only temporary failures like network errors, timeouts, 5xx and 429, and only for idempotent requests or requests with an idempotency key. I use exponential backoff with jitter, so clients don't all retry at the same time after an outage. For cancellation I pass an AbortController signal, and React Query does this automatically, which also prevents race conditions in search. React Query also deduplicates requests with the same key, and outside it I keep a map of in-flight promises.
+! После падения бэкенда на 2 минуты все клиенты одновременно делали retry каждую секунду, и сервер не мог подняться (thundering herd). Внедрили backoff с jitter и уважение `Retry-After` — следующее восстановление прошло за секунды.
+? Is it safe to retry a POST /orders request? How do you make it safe?
+
+# native | Native iOS / Android | Нативные модули, пуши, сборка, подпись, диагностика.
+
+## {Senior} 30 | How do push notifications work end to end on iOS and Android?
+~ Как работают push-уведомления от начала до конца на iOS и Android?
+= Приложение получает разрешение и токен устройства (APNs / FCM), отправляет его на бэкенд, бэкенд шлёт пуш через APNs/FCM, приложение обрабатывает его в трёх состояниях и открывает нужный экран по тапу.
+**Поток:**
+1. Разрешение: iOS — всегда нужен запрос (`provisional` для тихого старта), Android 13+ — `POST_NOTIFICATIONS`. Запрашивать в контексте, а не на первом экране.
+2. Токен: APNs device token (iOS) и FCM registration token. С Firebase на iOS FCM-токен связывается с APNs-токеном. Отправить на бэкенд с `userId`, платформой, языком; обновлять при `onTokenRefresh`; удалять при logout.
+3. Отправка: бэкенд → FCM HTTP v1 API (и для iOS через FCM) или напрямую APNs (`.p8` ключ). Expo — Expo Push Service.
+4. Доставка и обработка:
+- Foreground — приложение само решает, показывать ли (`setNotificationHandler` / `onMessage`).
+- Background / killed — система показывает уведомление сама (notification payload); data-only сообщения на iOS — `content-available: 1`, ограничены и не гарантированы.
+- Тап: `getInitialNotification` (холодный старт) и `onNotificationOpenedApp` → deep link на экран.
+**Нативные детали:** iOS — capability Push Notifications + Background Modes (remote notifications), Notification Service Extension для картинок и E2E-расшифровки. Android — notification channels (обязательно с 8.0), иконка-силуэт, приоритеты, `FirebaseMessagingService`.
+**Проблемы в проде:** токен в sandbox vs production APNs, отсутствие пушей на некоторых Android из-за агрессивного энергосбережения (Xiaomi, Huawei без GMS), дубли при нескольких токенах на пользователя.
+> The app asks for permission in context and gets a device token from APNs on iOS or FCM on Android, and sends it to our backend with the user id. The token can change, so I update it on refresh and remove it on logout. The backend sends the message through FCM or APNs. In the foreground the app decides how to show it, in the background the system shows it, and when the user taps it I use the same deep link logic to open the right screen, both on cold and warm start. On Android I also set up notification channels, and on iOS a notification service extension if we need images.
+! Пуши о статусе заказа не открывали экран заказа при холодном старте — обрабатывался только `onNotificationOpenedApp`. Добавили `getInitialNotification` и единый роутинг через linking. Отдельно нашли, что после переустановки на одном устройстве было 3 токена одного пользователя — пуши дублировались; добавили удаление токена при logout и upsert по `deviceId`.
+? A user says they don't receive notifications on a Xiaomi phone, but everything works on Pixel. How do you investigate?
+
+## {Senior} 33 | How do you write a native module in Swift or Kotlin? Walk through an example.
+~ Как написать нативный модуль на Swift или Kotlin? Пройди по примеру.
+= Спека на TypeScript → Codegen → реализация на Kotlin и Swift/ObjC++ (TurboModule) или проще через Expo Modules API. Важно: потоки, обработка ошибок через reject, lifecycle и тесты.
+**Вариант 1 — Expo Modules API (самый удобный, работает и в bare RN):**
+```swift
+// ios/BatteryModule.swift
+import ExpoModulesCore
+public class BatteryModule: Module {
+  public func definition() -> ModuleDefinition {
+    Name("Battery")
+    Function("getLevel") { () -> Float in
+      UIDevice.current.isBatteryMonitoringEnabled = true
+      return UIDevice.current.batteryLevel
+    }
+    AsyncFunction("isLowPowerMode") { (promise: Promise) in
+      promise.resolve(ProcessInfo.processInfo.isLowPowerModeEnabled)
+    }
+    Events("onLowPowerChange")
+  }
+}
+```
+```kotlin
+// android/.../BatteryModule.kt
+class BatteryModule : Module() {
+  override fun definition() = ModuleDefinition {
+    Name("Battery")
+    Function("getLevel") {
+      val bm = appContext.reactContext!!.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
+      bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY) / 100f
+    }
+  }
+}
+```
+**Вариант 2 — TurboModule:** спека `NativeBattery.ts` → Codegen → Kotlin-класс наследует сгенерированный `NativeBatterySpec`, регистрируется через `BaseReactPackage`; на iOS ObjC++ класс реализует протокол `NativeBatterySpec` и `getTurboModule:` (Swift можно вызывать через обёртку).
+**На что обратить внимание:**
+- Потоки: UI API (UIKit, Activity) — только на main thread; долгие операции — в фоне, результат через Promise.
+- Ошибки — `reject(code, message)`, не крашить приложение исключением.
+- События в JS — `EventEmitter`/`Events`, отписка при отсутствии слушателей.
+- Lifecycle Android: Activity может пересоздаться, не держать ссылку на неё (утечка), использовать `currentActivity` в момент вызова.
+- Permissions и `Info.plist` описания.
+> Today I'd usually use the Expo Modules API, because it gives a simple Swift and Kotlin DSL on top of JSI and works in bare React Native too. I define the module name, synchronous functions, async functions that return promises, and events. For a pure TurboModule, I write a TypeScript spec, run Codegen and implement the generated interface in Kotlin and Objective-C++. The important parts are threading, so UI APIs run on the main thread and long work runs in the background, returning errors through reject instead of crashing, and not keeping references to the Android activity.
+! Нужно было читать данные с Bluetooth-весов в фитнес-приложении: готовая библиотека не поддерживала протокол производителя. Написали модуль на Expo Modules: Kotlin `BluetoothGatt` + Swift `CoreBluetooth`, события веса через `Events`. Первая версия крашилась на Android при повороте экрана — держали ссылку на Activity; перешли на `appContext` и weak-ссылки.
+? Your native method is called from JS, but it needs to show a native UI controller. Which thread does it run on, and what do you do?
+
+## {Senior} 41 | How do you set up CI/CD for a React Native app, including signing and store releases?
+~ Как настроить CI/CD для React Native приложения, включая подпись и релизы в сторы?
+= На каждый PR: lint, typecheck, тесты, сборка. На релиз: сборка с управляемыми сертификатами (EAS или fastlane match), загрузка в TestFlight/Play internal, e2e, постепенная раскатка, source maps в Sentry, OTA для JS-фиксов.
+**Pipeline:**
+- PR: `tsc --noEmit`, ESLint, Jest, проверка бандла, иногда e2e на эмуляторе (Maestro/Detox).
+- Release: увеличение `buildNumber`/`versionCode` автоматически, сборка, подпись, загрузка, source maps, changelog.
+**Инструменты:** EAS Build/Submit/Update (облачные сборки, управление credentials), fastlane (`match` для iOS-сертификатов в зашифрованном репо, `gym`, `supply`, `pilot`), GitHub Actions / Bitrise / Codemagic.
+**Подпись:**
+- iOS: Distribution certificate + Provisioning profile (App ID, entitlements, устройства для ad-hoc). Хранить централизованно (match/EAS), не на ноутбуке одного разработчика.
+- Android: upload keystore (хранить в секретах CI) + Play App Signing (Google хранит ключ приложения). Потеря upload-ключа восстанавливается через Google, потеря app-ключа без Play App Signing — нельзя обновить приложение.
+**Релизный процесс:** TestFlight / internal testing → QA → phased release (iOS 7 дней) / staged rollout (Android %) → мониторинг crash-free и ключевых метрик → полный релиз или halt. Hotfix JS — EAS Update с правильным `runtimeVersion`.
+**Окружения:** разные bundle id/applicationId для dev/staging/prod, `app.config.ts` или build flavors/schemes, секреты не в бандле.
+> On every pull request CI runs type checking, linting, unit tests and a build. For releases we build with centrally managed signing, using EAS credentials or fastlane match for iOS and the upload keystore in CI secrets with Play App Signing on Android. Build numbers are incremented automatically, source maps go to Sentry, and the build is uploaded to TestFlight and Play internal testing. After QA we use phased release and staged rollout, watch the crash-free rate and stop the rollout if something breaks. Small JavaScript fixes can go out with an OTA update for the matching runtime version.
+! Релизы собирал один разработчик на своём Mac, и когда он ушёл в отпуск, истёк provisioning profile — критический фикс задержался на 2 дня. Перенесли сборки в EAS + GitHub Actions, сертификаты в EAS credentials, релиз стал занимать 25 минут по кнопке.
+? What breaks if two different JS bundles are sent by OTA to users on different native versions, and how does runtimeVersion prevent it?
+
+## {Senior} 50 | How do you debug a native crash or a build failure on Android or iOS?
+~ Как отлаживать нативный краш или ошибку сборки на Android или iOS?
+= Читать нативный стектрейс (Logcat, Xcode, Crashlytics/Sentry с dSYM и mapping), воспроизвести в release, изолировать модуль. Для сборки — чистка кэшей, версии Gradle/Pods/Xcode и конфликты зависимостей.
+**Нативные краши:**
+- Источники: Crashlytics / Sentry (с загруженными dSYM для iOS и `mapping.txt` R8 для Android), Google Play Console (ANR и краши), Xcode Organizer.
+- Локально: `adb logcat` (фильтр по `AndroidRuntime`, `ReactNativeJS`), Xcode console + breakpoint на exceptions, симулятор vs реальное устройство.
+- Частые причины: вызов UI API не с main thread, `NullPointerException` в нативном модуле, R8 удалил класс (нужны `proguard-rules`), отсутствие описания в `Info.plist` (краш при запросе разрешения), OOM от картинок, ANR из-за тяжёлой работы на main thread Android.
+**Ошибки сборки:**
+- iOS: `pod deintegrate && pod install`, `pod repo update`, очистка DerivedData, совпадение версий Xcode и iOS deployment target, `use_frameworks!` конфликты, Ruby/CocoaPods версии.
+- Android: `./gradlew clean`, `--stacktrace`/`--info`, версии AGP/Gradle/Kotlin/JDK (JDK 17), `compileSdk`/`targetSdk`, конфликты дубликатов классов (`./gradlew app:dependencies`), лимиты памяти Gradle (`org.gradle.jvmargs`).
+- Expo prebuild: `npx expo prebuild --clean`, проверить config plugins.
+- Подход: прочитать первую реальную ошибку, а не последнюю строку; найти в issues библиотеки; бисекция последних изменений (`git bisect`).
+> For a native crash I start with the native stack trace in Crashlytics or Sentry, with dSYMs and the R8 mapping file uploaded, so it's readable. Then I try to reproduce it in a release build on a real device and check logcat or the Xcode console. Common causes are UI calls off the main thread, classes removed by R8, missing permission descriptions in Info.plist and out-of-memory errors from images. For build failures I read the first real error, check versions of Xcode, CocoaPods, Gradle, Kotlin and the JDK, clean caches and look for duplicate dependencies.
+! После включения R8 релиз крашился на старте только на Android: `ClassNotFoundException` в SDK аналитики, использующем рефлексию. В debug всё работало. По `mapping.txt` нашли класс, добавили `-keep` правило из документации SDK.
+? An Android release build works on your phone but shows ANRs in Play Console for 2% of users. How do you investigate?
+
+# testing | Testing | Стратегия тестирования, моки, E2E.
+
+## {Senior} 39 | What is your testing strategy for a React Native app? Which tests do you write at which level?
+~ Какая у тебя стратегия тестирования React Native приложения? Какие тесты на каком уровне?
+= Много быстрых unit-тестов на логику, интеграционные тесты экранов через RNTL с MSW, немного E2E (Detox или Maestro) на критические сценарии, плюс статическая типизация и мониторинг в проде.
+- **Static:** TypeScript strict, ESLint (react-hooks, react-native), это самый дешёвый слой.
+- **Unit (Jest):** чистые функции (форматирование цен, валидация, reducers, селекторы, retry-логика, sync engine), кастомные хуки через `renderHook`.
+- **Integration / component (React Native Testing Library):** экран целиком с провайдерами (QueryClient, навигация, стор), сеть через MSW, проверка поведения: «ввёл промокод → видит скидку». Запросы по роли и тексту (`getByRole('button', { name: 'Pay' })`), `userEvent`.
+- **E2E:** Detox (gray-box, синхронизация с приложением, быстрый, но сложнее настройка) или Maestro (YAML, black-box, прост и стабилен, хорош для QA). 5–15 критических сценариев: логин, поиск → карточка → корзина → оплата (в sandbox), deep link, push.
+- **Ручное/устройства:** слабые Android, разные версии iOS, большие шрифты, плохая сеть.
+- **Прод:** Sentry/Crashlytics, crash-free rate, перф-метрики — тоже часть качества.
+- Снапшоты — точечно (маленькие компоненты), большие снапшоты никто не читает.
+- Покрытие — не цель; цель — уверенность в критических путях.
+> I follow the testing trophy idea. TypeScript and ESLint catch the cheapest bugs. Unit tests with Jest cover pure logic like price formatting, validation, reducers and sync logic. Most value comes from integration tests with React Native Testing Library: I render a whole screen with real providers, mock the network with MSW and test behavior the way a user would. On top I have a small set of end-to-end tests in Detox or Maestro for critical flows like login and checkout, and I watch crash-free rate in production.
+! Перед каждым релизом QA вручную проходил 40 сценариев 2 дня. Добавили 12 Maestro-флоу в CI на эмуляторах и интеграционные тесты чекаута с MSW. Ручная регрессия сократилась до нескольких часов, а баг «промокод не применяется при смене валюты» поймали интеграционным тестом до релиза.
+? How do you decide what to cover with E2E tests and what to leave to integration tests?
+
+## {Senior} 43 | How do you mock native modules and test async logic with React Query in Jest?
+~ Как мокать нативные модули и тестировать асинхронную логику с React Query в Jest?
+= Нативные модули мокать в jest.setup (многие библиотеки дают готовые моки), сеть — через MSW, для React Query — новый QueryClient на тест с retry: false, асинхронность через findBy/waitFor и fake timers.
+- Preset `react-native` (или `jest-expo`), `transformIgnorePatterns` для ESM-пакетов из node_modules.
+- Готовые моки: `react-native-reanimated/mock`, `@react-native-async-storage/async-storage/jest/async-storage-mock`, `react-native-gesture-handler/jestSetup`, `react-native-mmkv` (in-memory в тестах).
+- Свои модули: `jest.mock('../native/NativeBattery', () => ({ getLevel: jest.fn(() => 0.5) }))`.
+- Сеть: MSW (`setupServer` из `msw/node`) — тестируется реальный API-клиент, interceptors, обработка ошибок.
+- React Query: новый `QueryClient` на каждый тест (`retry: false`, `gcTime: Infinity` для избежания таймеров после теста), обёртка-провайдер.
+- Асинхронность: `await screen.findByText(...)`, `waitFor`, `jest.useFakeTimers()` + `act(() => jest.advanceTimersByTime(...))` для debounce и retry.
+```tsx
+const createWrapper = () => {
+  const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } })
+  return ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+  )
+}
+
+it('shows an error when the cart fails to load', async () => {
+  server.use(http.get('*/cart', () => HttpResponse.json({}, { status: 500 })))
+  render(<CartScreen />, { wrapper: createWrapper() })
+  expect(await screen.findByText(/could not load cart/i)).toBeOnTheScreen()
+})
+```
+> Native modules don't exist in Jest, so I mock them in the setup file, using the official mocks for libraries like Reanimated, Gesture Handler or AsyncStorage, and jest.mock for our own modules. For the network I use MSW, so the real API client and interceptors are tested. For React Query I create a new QueryClient for every test with retries off, and I wait for async UI with findBy queries, or fake timers for debounce and retry logic.
+! Тесты были флаки: общий `QueryClient` между тестами отдавал закэшированные данные из предыдущего теста, а retry по умолчанию растягивал падающие тесты до таймаута. Новый клиент на тест с `retry: false` сделал тесты стабильными и быстрее в ~2 раза.
+? How do you test a component that uses useFocusEffect from React Navigation?
+
+## {Middle} 48 | Detox vs Maestro: how do you choose, and how do you fight flaky E2E tests?
+~ Detox vs Maestro: как выбирать и как бороться с флаки E2E тестами?
+= Detox — gray-box, синхронизируется с приложением (ждёт idle JS, сеть, анимации), тесты на JS. Maestro — black-box на YAML, проще и стабильнее для QA. Флаки лечатся testID, стабильными данными, моками внешних сервисов и отсутствием sleep.
+- **Detox:** знает о внутреннем состоянии RN (ожидает idle JS thread, сетевые запросы, таймеры, анимации), тесты на JS/TS в Jest, нужна нативная сборка под тест и настройка; бесконечные анимации и долгие таймеры ломают синхронизацию (`device.disableSynchronization` точечно).
+- **Maestro:** YAML-флоу, работает с любым приложением как пользователь, встроенные ожидания и retry, Maestro Studio для записи, проще для QA и cloud-запусков; меньше контроля изнутри.
+- **Против флаки:** `testID` вместо текстов (тексты меняются и переводятся), фиксированные тестовые данные (seed backend или моки), отключение анимаций в тестовой сборке, отдельная тестовая конфигурация (без онбординга, A/B, push-диалогов), ожидания по условию, а не `sleep`, изоляция тестов (чистый state на старте), видео и логи артефактами CI.
+- Запускать критический набор на каждый PR, полный — nightly.
+```yaml
+# maestro/checkout.yaml
+appId: com.shop.app
+---
+- launchApp: { clearState: true }
+- tapOn: { id: "search-input" }
+- inputText: "lipstick"
+- tapOn: { id: "product-card-0" }
+- tapOn: { id: "add-to-cart" }
+- assertVisible: { id: "cart-badge", text: "1" }
+```
+> Detox is gray-box: it synchronizes with the app and waits until the JS thread, network and animations are idle, and tests are written in JavaScript. Maestro is black-box with YAML flows, it's easier to write and maintain, so QA can own the tests. To reduce flakiness I use testIDs instead of texts, fixed test data or mocked external services, disable animations in the test build, wait for conditions instead of sleeps, and save videos and logs in CI.
+! E2E чекаута падали в ~20% прогонов: тест ждал фиксированные 3 секунды, а платёжный sandbox отвечал от 1 до 6 секунд, плюс иногда всплывал системный диалог пушей. Перешли на ожидание по условию, мок платёжного шлюза в тестовой сборке и предварительную выдачу разрешений — флаки упали ниже 2%.
+? Should E2E tests run against the real backend or a mocked one? What are the trade-offs?
+
+# design | Mobile System Design | Проектирование с нуля: требования, архитектура, данные, trade-offs.
+
+## [!] {Expert} 12 | Design the architecture of a large-scale React Native app from scratch for several teams.
+~ Спроектируй с нуля архитектуру большого React Native приложения, над которым работают несколько команд.
+= Начать с требований, затем: монорепо с feature-модулями и чёткими границами, слои (app → features → entities → shared), единый API-слой и state-стратегия, дизайн-система, навигация, конфигурация окружений, CI/CD, наблюдаемость и правила для команд.
+**1. Требования (уточнить первым делом):** сколько команд и экранов, платформы (iOS, Android, web?), офлайн, real-time, локализация, требования к безопасности (финансы, медицина), частота релизов, нужен ли OTA, есть ли общий код с вебом.
+**2. Структура (монорепо, Turborepo/Nx + pnpm/yarn workspaces):**
+```
+apps/
+  mobile/            # навигация, провайдеры, конфиг окружений, точки входа
+  web/
+packages/
+  core-api/          # http-клиент, interceptors, codegen типов, queryOptions
+  core-ui/           # дизайн-система: токены, атомы, компоненты
+  core-utils/        # форматирование, i18n, аналитика (интерфейсы)
+  feature-catalog/   # экраны + хуки + локальный state фичи
+  feature-cart/
+  feature-checkout/
+  platform-native/   # нативные модули, пуши, deep links
+```
+- Направление зависимостей: app → feature → core/platform. Фичи не импортируют друг друга напрямую (только через публичный `index.ts` или события/навигацию). Проверка — ESLint boundaries, CODEOWNERS по пакетам.
+**3. Data & state:** React Query для server state (queryOptions в `core-api`), Zustand для клиентского state фичи, сессия — в core; персистентность MMKV; offline-стратегия по необходимости.
+**4. Навигация:** root navigator в app, фичи экспортируют свои stack-навигаторы/экраны; типизированные роуты; единый linking config для deep links и пушей.
+**5. Кросс-срезовые вещи:** feature flags и remote config, аналитика через интерфейс (провайдер можно заменить), i18n, error boundaries на уровне фич, логирование и Sentry с тегами фичи.
+**6. Производительность:** бюджеты (TTI, размер бандла), lazy-экраны, FlashList, Reanimated, перф-тесты в CI.
+**7. Качество и процесс:** strict TS, шаблоны пакетов (генераторы), обязательные тесты для core, ADR для архитектурных решений, CI с кэшем сборок, EAS/fastlane, OTA с каналами.
+**8. Trade-offs:** монорепо vs полирепо (проще согласованность vs независимость команд); микрофронтенды в мобилке (Re.Pack Module Federation) дают независимые деплои, но сильно усложняют — обычно не стоит; Expo vs bare (скорость vs полный контроль, сейчас Expo подходит почти всегда).
+> I'd start with requirements: number of teams, platforms, offline and real-time needs, security and release frequency. Then I'd use a monorepo with feature packages and clear boundaries: the app layer has navigation and providers, feature packages own their screens and state, and core packages contain the API client, the design system and shared utilities. Features don't import each other directly, and lint rules and code owners enforce that. Server state lives in React Query with typed query options, client state in small Zustand stores. On top of that we need feature flags, analytics behind an interface, Sentry with feature tags, performance budgets in CI and architecture decision records. I would avoid mobile micro-frontends unless teams really need independent deployments.
+! Приложение на 3 команды (каталог, чекаут, лояльность) развивалось в одной папке `src/`: конфликты в PR, фичи импортировали внутренности друг друга, сборка ломалась от чужих изменений. Разделили на feature-пакеты в монорепо с ESLint boundaries и CODEOWNERS, общий API-слой с codegen. Время на ревью и количество регрессий между командами заметно упали, онбординг нового разработчика — с недели до 2–3 дней.
+? Two feature teams need the same "product card" component with small differences. Where does it live, and who owns it?
+
+## {Expert} 40 | Design a real-time chat feature for a mobile app.
+~ Спроектируй real-time чат для мобильного приложения.
+= WebSocket для доставки в реальном времени, REST для истории с курсорной пагинацией, локальная БД как источник для UI, outbox для отправки с clientId, статусы сообщений, reconnect с backoff и пуши, когда приложение в фоне.
+**Требования:** 1:1 и группы, история, статусы (sent/delivered/read), typing, вложения, офлайн-отправка, пуши, поиск? E2E-шифрование?
+**Транспорт:**
+- WebSocket (или Socket.IO/Phoenix channels) для новых сообщений, статусов, typing. Аутентификация токеном при подключении, переподключение при refresh токена.
+- REST/GraphQL для истории: курсорная пагинация (`before=messageId`), не offset.
+- В фоне сокет закрывается ОС → новые сообщения через push, при возврате — sync «что пропустил» по `lastEventId`.
+**Клиентская архитектура:**
+- Локальная БД (SQLite/WatermelonDB): сообщения и диалоги, UI подписан на запросы к БД, список — инвертированный FlashList.
+- Отправка: сообщение сохраняется с `clientId` и статусом `pending` → outbox → сокет/REST → сервер возвращает `serverId` и `createdAt` → обновление записи. Повтор при ошибке, идемпотентность по `clientId`.
+- Порядок: сортировка по серверному времени/sequence, а не по времени устройства.
+- Reconnect: exponential backoff с jitter, heartbeat (ping/pong) для обнаружения «мёртвого» соединения, `NetInfo` + `AppState`.
+- Typing и presence — эфемерные, не сохранять в БД, throttle отправки.
+- Вложения: загрузка отдельно (presigned URL), сообщение ссылается на файл; превью, прогресс.
+**Производительность:** батчинг входящих событий (не setState на каждое сообщение), memo пузырей сообщений, ленивые картинки, ограничение количества сообщений в памяти.
+**Trade-offs:** WebSocket vs SSE vs long polling, готовые решения (Stream, Sendbird, Firebase) vs свой бэкенд — скорость запуска против стоимости и контроля.
+> I'd use a WebSocket for real-time events like new messages, read receipts and typing, and a REST API with cursor pagination for history. On the client a local database is the source of truth for the UI, and the message list is an inverted FlashList. When the user sends a message, I save it locally as pending with a client id, put it in an outbox and send it; the server confirms with a server id, and the client id makes retries idempotent. Messages are ordered by the server sequence, not the device clock. When the app goes to the background the OS closes the socket, so new messages arrive as push notifications, and on return the app syncs everything since the last event id. Reconnects use backoff with jitter and a heartbeat.
+! В чате поддержки маркетплейса сообщения иногда показывались не по порядку и дублировались после плохой сети. Причины: сортировка по `Date.now()` устройства и повторная отправка без идемпотентности. Перешли на серверный `sequence` и `clientId` — дубли и «прыжки» сообщений исчезли.
+? How do you show the correct unread count if the user reads messages on the web while the phone is offline?
+
+## {Senior} 45 | Design the checkout and payment flow for an e-commerce mobile app.
+~ Спроектируй чекаут и оплату для e-commerce мобильного приложения.
+= Сервер — источник правды для цены и заказа, платёж через нативный SDK провайдера (Stripe/Adyen, Apple Pay/Google Pay) с PaymentIntent, создаваемым на бэкенде, 3-D Secure, идемпотентность, подтверждение через вебхук и устойчивость к закрытию приложения.
+**Требования:** гостевой чекаут?, способы оплаты (карты, Apple Pay, Google Pay, BLIK, наложенный платёж), страны и валюты, промокоды, PCI DSS, SCA/3-D Secure (EU).
+**Поток:**
+1. Корзина → сервер пересчитывает цены, скидки, доставку (клиенту не доверяем).
+2. Создание заказа (`POST /orders` с idempotency key) → `orderId` в статусе `pending_payment`.
+3. Бэкенд создаёт PaymentIntent у провайдера и возвращает `clientSecret`.
+4. Клиент открывает нативный Payment Sheet (Stripe/Adyen SDK) — данные карты не проходят через наш код (PCI scope минимален). Apple Pay / Google Pay — через SDK провайдера.
+5. 3-D Secure — SDK показывает нативно, возврат в приложение через return URL (deep link).
+6. Источник правды об оплате — вебхук провайдера на бэкенд, а не ответ клиента. Клиент поллит статус заказа или получает push/WebSocket.
+**Устойчивость:**
+- Приложение убили во время 3DS → при следующем запуске проверить незавершённые заказы и показать актуальный статус.
+- Двойной тап «Оплатить» → disabled + idempotency key.
+- Сеть пропала после оплаты → не предлагать оплатить заново, пока статус неизвестен.
+**State:** discriminated union статусов чекаута (state machine, можно XState), React Query для заказа, без оптимистичных обновлений для оплаты.
+**Правила сторов:** физические товары можно оплачивать картой; цифровые товары и подписки в приложении — через In-App Purchase (с исключениями по регионам).
+**Аналитика и мониторинг:** воронка шагов, причины отказов, алерты на рост failed-платежей.
+> The server is the source of truth for prices and the order, so the client never calculates the final amount. The app creates the order with an idempotency key, the backend creates a payment intent and returns a client secret, and the app opens the payment provider's native sheet, so card data never touches our code. 3-D Secure is handled by the SDK with a deep link back to the app. The final payment status comes from the provider's webhook to our backend, and the app polls the order status or gets a push. I also handle the app being killed during payment, double taps and lost connections, so the user never pays twice.
+! Пользователи жаловались на двойные списания: при медленном 3DS они закрывали приложение, открывали снова и платили повторно, т.к. заказ выглядел неоплаченным. Добавили проверку незавершённых заказов на старте, статус «оплата проверяется» до вебхука и idempotency key — двойные списания прекратились.
+? The payment succeeded at the provider, but your webhook failed. What does the user see, and how does the system recover?
+
+## {Senior} 47 | Design a media upload feature: photos and videos from the device, with progress and retries.
+~ Спроектируй загрузку медиа: фото и видео с устройства, с прогрессом и повторами.
+= Сжать и подготовить файл на устройстве, загружать напрямую в хранилище через presigned URL (multipart/resumable для больших файлов), очередь загрузок с ограничением параллельности, retry, прогресс, фоновая загрузка и подтверждение бэкенду.
+**Требования:** размеры файлов, видео?, сколько файлов, офлайн, фон, приватность (EXIF/геолокация), модерация.
+**Клиент:**
+- Выбор: `expo-image-picker` / камера, разрешения (iOS limited photo access).
+- Подготовка: ресайз и сжатие фото (`expo-image-manipulator`), HEIC → JPEG при необходимости, удаление EXIF-геолокации, сжатие видео (нативные библиотеки), превью сразу из локального URI.
+- Загрузка: бэкенд выдаёт presigned URL (S3/GCS/R2) → `PUT` файла напрямую в хранилище, не через наш API. Для больших файлов — multipart upload или протокол tus (resumable): продолжить с места обрыва.
+- Нативная загрузка (`expo-file-system` `createUploadTask` / background URLSession / WorkManager) — не держать большой файл в JS-памяти (не base64!), может продолжаться в фоне.
+- Очередь: SQLite/MMKV-персистентность задач, лимит параллельности 2–3, retry с backoff, отмена, статусы на UI.
+- После загрузки: `POST /media/complete` с ключом файла → бэкенд проверяет, создаёт thumbnails, модерацию.
+**Trade-offs:** через свой API (просто, но нагрузка на сервер) vs presigned URL (масштабируемо); сжатие на клиенте (меньше трафика, но батарея и время) vs на сервере.
+> On the device I resize and compress photos, remove location data from EXIF and show a preview immediately from the local file. The backend gives a presigned URL, and the app uploads the file directly to object storage, not through our API. For big videos I use multipart or a resumable protocol like tus, so an interrupted upload continues from where it stopped. Uploads run natively, without loading the file into JS memory as base64, through a persistent queue with limited concurrency, retries with backoff and progress per file. When the upload finishes, the app notifies the backend, which creates thumbnails and runs moderation.
+! Загрузка видео-отзывов через base64 в JSON приводила к OOM-крашам на Android при видео больше ~50 МБ и обрывам на мобильной сети. Перешли на presigned URL + нативную multipart-загрузку с resume — краши ушли, процент успешных загрузок вырос с ~70% до ~97%.
+? The user starts uploading 20 photos and then locks the phone. What happens on iOS and Android, and how do you continue?
+
+## {Senior} 49 | How would you design feature flags, A/B testing and safe releases for a mobile app?
+~ Как бы ты спроектировал feature flags, A/B тесты и безопасные релизы для мобильного приложения?
+= Remote config с кэшем и безопасными дефолтами, флаги как типизированный слой с владельцем и сроком жизни, kill switch для рискованных фич, OTA для JS-фиксов и staged rollout + мониторинг для нативных релизов.
+**Почему в мобилке это важнее, чем в вебе:** релиз проходит ревью сторов, пользователи обновляются неделями — нельзя «откатить деплой». Флаги и OTA — главный инструмент управления рисками.
+**Feature flags:**
+- Провайдер: LaunchDarkly, Statsig, GrowthBook, Firebase Remote Config, Unleash или свой.
+- Загрузка при старте с кэшем прошлой сессии (MMKV) и типизированными дефолтами в коде — приложение работает без сети и при падении сервиса флагов.
+- Типизированный слой: `useFlag('newCheckout')` с union-ключами, без строк по всему коду.
+- Таргетинг: версия приложения, платформа, страна, процент пользователей, внутренние тестировщики.
+- Kill switch для рискованных фич (новый платёжный метод) — выключить без релиза.
+- Гигиена: владелец и дата удаления для каждого флага, иначе через год код превращается в лабиринт `if`.
+**A/B тесты:** стабильное распределение по `userId`/`deviceId`, событие exposure при фактическом показе, метрики заранее, достаточный размер выборки, не менять вариант посреди сессии.
+**Безопасные релизы:** phased release / staged rollout, мониторинг crash-free и бизнес-метрик, остановка раскатки, OTA (EAS Update) для JS с каналами и откатом, минимальная поддерживаемая версия (force update экран через remote config).
+> In mobile we can't roll back a release, because users update slowly and every build goes through store review, so feature flags are the main tool for managing risk. I load flags at startup, cache them in MMKV and keep typed defaults in the code, so the app works if the flag service is down. Risky features get a kill switch. Experiments assign users by a stable id and log exposure only when the variant is really shown. Native releases use phased rollouts with crash and business monitoring, JavaScript fixes can go out with OTA updates, and remote config can force an update below a minimum supported version.
+! Новый метод оплаты BLIK после релиза давал ошибки у части банков. Благодаря kill switch выключили его через remote config за 5 минут, без экстренного релиза, а фикс выкатили OTA-обновлением на следующий день.
+? A flag is fetched at startup, but the user is on the checkout screen when the flag changes. Should the UI change immediately? Why or why not?
+
+</script>
+
+<script>
+(function(){
+  const ORDER = ['js','ts','react','arch','newarch','perf','state','nav','network','native','testing','design'];
+  const raw = document.getElementById('data').textContent;
+  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const inline = s => esc(s)
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+
+  const sections = [];
+  let sec = null, qa = null, inCode = false, buf = [];
+  for (const line of raw.split('\n')) {
+    if (inCode) {
+      if (line.startsWith('```')) { qa.body.push({t:'code', v:buf.join('\n')}); buf=[]; inCode=false; }
+      else buf.push(line);
+      continue;
+    }
+    if (line.startsWith('# ')) {
+      const [id, title, sub] = line.slice(2).split('|').map(s=>s.trim());
+      sec = {id, title, sub, items:[]}; sections.push(sec); qa = null; continue;
+    }
+    if (line.startsWith('## ')) {
+      let t = line.slice(3).trim(), must = false, level = 'Senior', rank = 99;
+      if (t.startsWith('[!]')) { must = true; t = t.slice(3).trim(); }
+      const m = t.match(/^\{(\w+)\}\s*(\d+)\s*\|\s*(.*)$/);
+      if (m) { level = m[1]; rank = +m[2]; t = m[3]; }
+      qa = {q:t, ru:'', must, level, rank, sec, body:[]}; sec.items.push(qa); continue;
+    }
+    if (!qa) continue;
+    if (line.startsWith('```')) { inCode = true; buf=[]; continue; }
+    if (line.startsWith('~ ')) { qa.ru = line.slice(2); continue; }
+    const tag = line.slice(0,2);
+    if (tag==='= ') { qa.body.push({t:'short', v:line.slice(2)}); continue; }
+    if (tag==='> ') { qa.say = line.slice(2); continue; }
+    if (tag==='! ') { qa.prod = line.slice(2); continue; }
+    if (tag==='? ') { qa.fup = line.slice(2); continue; }
+    if (line.startsWith('- ')) {
+      const last = qa.body[qa.body.length-1];
+      if (last && last.t==='ul') last.v.push(line.slice(2)); else qa.body.push({t:'ul', v:[line.slice(2)]});
+      continue;
+    }
+    const om = line.match(/^(\d+)\.\s+(.*)$/);
+    if (om) {
+      const last = qa.body[qa.body.length-1];
+      if (last && last.t==='ol') last.v.push(om[2]); else qa.body.push({t:'ol', v:[om[2]]});
+      continue;
+    }
+    if (line.trim()==='' || line.startsWith('|')) continue;
+    qa.body.push({t:'p', v:line});
+  }
+  sections.sort((a,b)=>ORDER.indexOf(a.id)-ORDER.indexOf(b.id));
+  sections.forEach(s=>s.items.sort((a,b)=>a.rank-b.rank));
+  const all = sections.flatMap(s=>s.items);
+
+  const KEY = 'rn-senior-50-done';
+  let done = {};
+  try { done = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch(e) { done = {}; }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(done)); } catch(e){} };
+
+  const main = document.getElementById('main');
+  const chips = document.getElementById('chips');
+  const lvBox = document.getElementById('lv');
+  const state = { section:'all', q:'', must:false, hideDone:false, byRank:false, level:'all' };
+
+  const chipEls = {};
+  [{id:'all', title:'Все разделы'}, ...sections].forEach(s => {
+    const b = document.createElement('button');
+    b.className='chip'; b.type='button';
+    b.innerHTML = esc(s.title.split('(')[0].trim()) + ' <small></small>';
+    b.addEventListener('click', () => { state.section = s.id; render(); });
+    chips.appendChild(b); chipEls[s.id]=b;
+  });
+  const lvEls = {};
+  ['all','Middle','Senior','Expert'].forEach(l => {
+    const b = document.createElement('button');
+    b.className='chip'; b.type='button'; b.textContent = l==='all'?'Все':l;
+    b.addEventListener('click', () => { state.level = l; render(); });
+    lvBox.appendChild(b); lvEls[l]=b;
+  });
+
+  const bodyHtml = (body) => body.map(b => {
+    if (b.t==='code') return '<pre><code>'+esc(b.v)+'</code></pre>';
+    if (b.t==='ul') return '<ul>'+b.v.map(li=>'<li>'+inline(li)+'</li>').join('')+'</ul>';
+    if (b.t==='ol') return '<ol>'+b.v.map(li=>'<li>'+inline(li)+'</li>').join('')+'</ol>';
+    if (b.t==='short') return '<div class="blk short">'+inline(b.v)+'</div>';
+    return '<p>'+inline(b.v)+'</p>';
+  }).join('');
+
+  all.forEach(it => {
+    const uid = 'r'+it.rank;
+    const d = document.createElement('details'); d.className='qa'; d.id='q-'+uid;
+    d.innerHTML = '<summary><span class="num">#'+it.rank+'</span><span class="qwrap"><span class="qt">'+inline(it.q)+'</span><span class="qru">'+inline(it.ru)+'</span><span class="cat"></span></span>'+
+      '<span class="badges"><span class="lvl '+it.level+'">'+it.level+'</span>'+(it.must?'<span class="must">топ-15</span>':'')+'</span></summary>'+
+      '<div class="ans">'+bodyHtml(it.body)+
+      (it.say?'<div class="blk say">'+inline(it.say)+'</div>':'')+
+      (it.prod?'<div class="blk prod">'+inline(it.prod)+'</div>':'')+
+      (it.fup?'<div class="blk fup"><span>'+inline(it.fup)+'</span></div>':'')+
+      '<label class="learn"><input type="checkbox"> Выучил</label></div>';
+    const cb = d.querySelector('input');
+    cb.checked = !!done[uid]; d.classList.toggle('done', cb.checked);
+    cb.addEventListener('change', () => { if(cb.checked) done[uid]=1; else delete done[uid]; save(); d.classList.toggle('done', cb.checked); render(); });
+    it.el = d; it.uid = uid; it.catEl = d.querySelector('.cat');
+    it.text = [it.q, it.ru, it.say, it.prod, it.fup, ...it.body.map(b=>Array.isArray(b.v)?b.v.join(' '):b.v)].join(' ').toLowerCase();
+  });
+
+  // section containers + flat container
+  sections.forEach(s => {
+    const el = document.createElement('section'); el.className='sec';
+    el.innerHTML = '<div class="sec-head"><h2>'+esc(s.title)+'</h2><span class="prog"></span><p>'+esc(s.sub||'')+'</p></div><div class="list"></div>';
+    s.el = el; s.list = el.querySelector('.list'); main.appendChild(el);
+  });
+  const flat = document.createElement('section'); flat.className='sec';
+  flat.innerHTML = '<div class="sec-head"><h2>Все вопросы по вероятности</h2><span class="prog"></span><p>От самого вероятного (#1) к менее вероятному.</p></div><div class="list"></div>';
+  const flatList = flat.querySelector('.list'); main.appendChild(flat);
+  const empty = document.createElement('p'); empty.className='empty'; empty.textContent='Ничего не найдено. Попробуй другое слово или сбрось фильтры.'; empty.hidden=true; main.appendChild(empty);
+
+  // top-15 list
+  const top = document.getElementById('toplist');
+  all.filter(i=>i.must).sort((a,b)=>a.rank-b.rank).forEach(it => {
+    const li = document.createElement('li');
+    li.innerHTML = '<a href="#q-'+it.uid+'">'+inline(it.ru)+'</a>';
+    li.querySelector('a').addEventListener('click', e => { e.preventDefault(); state.section='all'; state.q=''; document.getElementById('q').value=''; render(); it.el.open = true; it.el.scrollIntoView({behavior:'smooth', block:'start'}); });
+    top.appendChild(li);
+  });
+
+  let layout = null;
+  function place(){
+    const want = state.byRank ? 'flat' : 'sec';
+    if (layout === want) return;
+    if (want==='flat') all.slice().sort((a,b)=>a.rank-b.rank).forEach(it=>{ flatList.appendChild(it.el); it.catEl.textContent = it.sec.title; });
+    else sections.forEach(s=>s.items.forEach(it=>{ s.list.appendChild(it.el); it.catEl.textContent=''; }));
+    layout = want;
+  }
+
+  function render(){
+    place();
+    let shown = 0;
+    const ok = it => (state.section==='all'||state.section===it.sec.id) && (!state.must||it.must) && (state.level==='all'||it.level===state.level) && (!state.hideDone||!done[it.uid]) && (!state.q||it.text.includes(state.q));
+    all.forEach(it => { const v = ok(it); it.el.hidden = !v; if (v) shown++; });
+    sections.forEach(s => {
+      const vis = s.items.filter(i=>!i.el.hidden).length;
+      const dn = s.items.filter(i=>done[i.uid]).length;
+      s.el.hidden = state.byRank || vis===0;
+      s.el.querySelector('.prog').textContent = 'выучено '+dn+' из '+s.items.length;
+      chipEls[s.id].querySelector('small').textContent = s.items.length;
+    });
+    flat.hidden = !state.byRank || shown===0;
+    const totalDone = all.filter(i=>done[i.uid]).length;
+    flat.querySelector('.prog').textContent = 'выучено '+totalDone+' из '+all.length;
+    chipEls.all.querySelector('small').textContent = totalDone+'/'+all.length;
+    Object.entries(chipEls).forEach(([id,b])=>b.setAttribute('aria-pressed', id===state.section));
+    Object.entries(lvEls).forEach(([id,b])=>b.setAttribute('aria-pressed', id===state.level));
+    empty.hidden = shown>0;
+  }
+
+  let t;
+  document.getElementById('q').addEventListener('input', e => {
+    clearTimeout(t); t = setTimeout(()=>{ state.q = e.target.value.trim().toLowerCase();
+      if (state.q) all.forEach(it=>{ if(it.text.includes(state.q)) it.el.open = true; });
+      render(); }, 150);
+  });
+  const toggleBtn = (id, key) => { const b = document.getElementById(id); b.addEventListener('click', ()=>{ state[key]=!state[key]; b.setAttribute('aria-pressed', state[key]); render(); }); };
+  toggleBtn('mustBtn','must'); toggleBtn('hideDone','hideDone'); toggleBtn('sortBtn','byRank');
+  const ta = document.getElementById('toggleAll');
+  ta.addEventListener('click', () => {
+    const open = ta.textContent === 'Раскрыть все';
+    all.forEach(it=>{ if(!it.el.hidden) it.el.open = open; });
+    ta.textContent = open ? 'Свернуть все' : 'Раскрыть все';
+  });
+
+  const first = all.find(i=>i.rank===1); if (first) first.el.open = true;
+  render();
+})();
+</script>
+</body>
+</html>
